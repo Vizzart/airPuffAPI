@@ -4,13 +4,13 @@ from flask import Flask
 from sqlalchemy import Table,Column
 from sqlalchemy.dialects.postgresql import UUID,TIMESTAMP,JSON,INTEGER
 
-from db_con import con
+from db_con import connection
 from airly import airly
 
 
 app = Flask(__name__)
 
-con.get_api_config()
+connection.get_api_config()
 print(airly.get_airly_results())
 
 
