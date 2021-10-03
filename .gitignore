@@ -140,3 +140,6 @@ dmypy.json
 cython_debug/
 #config file
 config.ini
+
+#windows and mac os working
+ .idea/
