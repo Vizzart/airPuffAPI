@@ -4,8 +4,6 @@ import requests
 
 def get_config_airly():
     """
-
-    :return:
     """
     config = configparser.ConfigParser()
     config.read('./config.ini')
