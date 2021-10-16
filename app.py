@@ -1,10 +1,10 @@
 import setting
 
-
 from airly import airly
 from esp import esp
 from flask import Flask
 from apscheduler.schedulers.background import BackgroundScheduler
+
 app = Flask(__name__)
 
 
@@ -16,19 +16,15 @@ def configure_app(flask_app):
 def initialize_app(flask_app):
     configure_app(flask_app)
     #add blueprint
-
 @app.route('/airly/insert')
 def get_airly():
     a = airly.Airly
-
     r = a.airly_insert(a, a.get_airly_results(a))
-
     return r
 
 @app.route('/esp/insert')
 def get_esp():
     e = esp.Esp
-
     r = e.esp_insert(e,e.get_esp_results(e))
     return r
 
