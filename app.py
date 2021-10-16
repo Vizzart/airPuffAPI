@@ -1,12 +1,11 @@
 import setting
 
 
-from db_con import connection
+from airly import airly
 
 from flask import Flask
 from apscheduler.schedulers.background import BackgroundScheduler
 app = Flask(__name__)
-
 
 
 def configure_app(flask_app):
@@ -18,14 +17,17 @@ def initialize_app(flask_app):
     configure_app(flask_app)
     #add blueprint
 
-@app.route('/airly/insert', methods = ['POST','GET'])
+@app.route('/airly/insert')
 def get_airly():
-    r =  connection.airly_insert()
+    a = airly.Airly
+
+    r = a.airly_insert(a, a.airly_insert(a,a.get_airly_results(a)))
+
     return r
 
-@app.route('/esp/insert', methods = ['POST','GET'])
+@app.route('/esp/insert')
 def get_esp():
-    r = connection.esp_insert()
+    r = ''
     return r
 
 def schedule ():

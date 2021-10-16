@@ -1,28 +1,40 @@
 import configparser
 import requests
 
+from db_connections import  con_db
 
-def get_config_airly():
-    """
-    """
-    config = configparser.ConfigParser()
-    config.read('./config.ini')
-    key = config.get("airly", "key")
-    latitude = config.get("airly","latitude")
-    longitude = config.get("airly", "longitude")
-    distance = config.get("airly", "distance")
+class Airly(con_db.DataBaseCon):
+    def __init__(
+        self,
+        key,
+        latitude,
+        longitude,
+        distance
+    ):
+        self.key = key
+        self.latitude = latitude
+        self.longitude = longitude
+        self.distance = distance
+
+    def get_config_airly(self):
+        """
+        """
+        config = configparser.ConfigParser()
+        config.read('./config.ini')
+        self.key = config.get("airly", "key")
+        self.latitude = config.get("airly","latitude")
+        self.longitude = config.get("airly", "longitude")
+        self.distance = config.get("airly", "distance")
 
 
-    return key,latitude,longitude,distance
-
-def get_airly_results(config_list = get_config_airly()):
-
-        key = config_list[0]
-        latitude = config_list[1]
-        longitude = config_list[2]
-        distance = config_list[3]
+    def get_airly_results(self):
+        self.get_config_airly(self)
+        key = self.key
+        latitude = self.latitude
+        longitude = self.longitude
+        distance = self.distance
         api_url = f"https://airapi.airly.eu/v2/measurements/nearest?lat={latitude}&lng={longitude}&maxDistanceKM={distance}"
         data = {'Accept': 'application/json'}
         data['apikey'] = key
-        r = requests.get(api_url,headers= data)
+        r= requests.get(api_url,headers= data)
         return r.json()
