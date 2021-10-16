@@ -2,7 +2,7 @@ import setting
 
 
 from airly import airly
-
+from esp import esp
 from flask import Flask
 from apscheduler.schedulers.background import BackgroundScheduler
 app = Flask(__name__)
@@ -21,13 +21,15 @@ def initialize_app(flask_app):
 def get_airly():
     a = airly.Airly
 
-    r = a.airly_insert(a, a.airly_insert(a,a.get_airly_results(a)))
+    r = a.airly_insert(a, a.get_airly_results(a))
 
     return r
 
 @app.route('/esp/insert')
 def get_esp():
-    r = ''
+    e = esp.Esp
+
+    r = e.esp_insert(e,e.get_esp_results(e))
     return r
 
 def schedule ():
