@@ -7,10 +7,7 @@ from db_connections import con_db
 
 class Esp(con_db.DataBaseCon):
 
-    def __init__(
-            self,
-            host
-    ):
+    def __init__(self,host):
         self.host = host
 
     def get_config_esp(self):

@@ -10,6 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 class DataBaseCon(object):
+    #zmienne klasy
     base = declarative_base()
     j_table = Table(
         "temp_json_status", base.metadata
@@ -22,7 +23,7 @@ class DataBaseCon(object):
     )
 
     def __init__(self):
-        pass
+        self.engine
 
     def config_db(self):
         config = configparser.ConfigParser()
@@ -64,6 +65,7 @@ class DataBaseCon(object):
 
     def esp_insert(self, json_esp):
         engine = self.dbconnect(self)
+        self.engine = engine
         json_string = json.dumps(json_esp[0])
         current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         api_name = 'esp'
