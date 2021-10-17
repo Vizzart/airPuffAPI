@@ -3,11 +3,12 @@ import json
 
 from flask import Flask
 from flask import Blueprint
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
-from airly import airly
-from esp import esp
+from api.airly import airly
+from api.esp import esp
 
 app = Flask(__name__)
 # dodać Logger
@@ -27,6 +28,10 @@ def configure_app(flask_app):
 def initialize_app(flask_app):
     configure_app(flask_app)
     blueprint = Blueprint('api', __name__, url_prefix='/api')
+    # api.add_namespace(airly)
+    # api.add_namespace(esp)
+    # api.add_namespace(rpi)
+    flask_app.register_blueprint(blueprint)
 
 @app.route('/airly/insert', methods= ['GET', 'POST'])
 def get_airly():
@@ -34,7 +39,7 @@ def get_airly():
     r = a.airly_insert(a, a.get_airly_results(a))
     return r
 
-@app.route('/esp/insert')
+@app.route('/esp/insert' , methods= ['GET', 'POST'])
 def get_esp():
     e = esp.Esp
     r = e.esp_insert(e,e.get_esp_results(e))
