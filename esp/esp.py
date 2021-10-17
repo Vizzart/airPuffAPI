@@ -21,7 +21,7 @@ class Esp(con_db.DataBaseCon):
         try:
             esp_url = f"http://{host}/json?view=sensorupdate"
             r = requests.get(esp_url)
-            print(r.status_code)
+            #print(r.status_code)
             return r.json(), r.status_code
         except requests.exceptions.ConnectionError:
             return "Connection refused", r.status_code

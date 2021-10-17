@@ -3,6 +3,7 @@ FLASK_APP = 'app.py'
 FLASK_SERVER_NAME = 'localhost:8888'
 FLASK_DEBUG = True
 FLASK_ENV = 'development'
+JSONIFY_PRETTYPRINT_REGULAR = True
 #Flask-Restplus settings
 RESTPLUS_SWAGGER_UI_DOC_EXPANSION = 'list'
 RESTPLUS_VALIDATE = True

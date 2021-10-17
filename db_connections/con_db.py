@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table, Column
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB, INTEGER, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session
 
 
 class DataBaseCon(object):
@@ -53,13 +54,16 @@ class DataBaseCon(object):
         current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         api_name = 'airly'
         # self.dbconnect(self)
-        statment = self.j_table.insert().values(
-            date_current=current_date_string,
-            json_text=json_string,
-            api_name=api_name,
-            status='200'
-        )
-        engine.execute(statment)
+        with Session(engine) as session:
+            statement = self.j_table.insert().values(
+                date_current=current_date_string,
+                json_text=json_string,
+                api_name=api_name,
+                status='200'
+            )
+            session.execute(statement)
+            session.commit()
+            session.close()
         print('INSET AIRLY- TRUE ' + current_date_string)
         return json_airly
 
@@ -70,14 +74,17 @@ class DataBaseCon(object):
         current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         api_name = 'esp'
         self.dbconnect(self)
-        statment = self.j_table.insert().values(
-            date_current=current_date_string,
-            json_text=json_string,
-            api_name=api_name,
-            status=json_esp[1]
-        )
-        engine.execute(statment)
-        print('INSET AIRLY- TRUE ' + current_date_string)
+        with Session(engine) as session:
+            statement = self.j_table.insert().values(
+                date_current=current_date_string,
+                json_text=json_string,
+                api_name=api_name,
+                status=json_esp[1]
+            )
+            session.execute(statement)
+            session.commit()
+            session.close()
+        print('INSET ESP- TRUE ' + current_date_string)
         return json_esp
 
 #
