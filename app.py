@@ -1,5 +1,7 @@
 import setting
-import json
+import os
+import logging.config
+
 
 from flask import Flask
 from flask import Blueprint
@@ -7,13 +9,14 @@ from flask import Blueprint
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
-from api.airly import airly
-from api.esp import esp
 from api.restPlus import  api
 from api.airly.route.airlyRoute import  ns as airly_ns
 
 app = Flask(__name__)
-# dodać Logger
+
+logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), 'logging.conf'))
+logging.config.fileConfig(logging_conf_path)
+log = logging.getLogger(__name__)
 
 def configure_app(flask_app):
     flask_app.config['FLASK_APP'] = setting.FLASK_APP
@@ -24,8 +27,6 @@ def configure_app(flask_app):
     flask_app.config['RESTPLUS_VALIDATE'] = setting.RESTPLUS_VALIDATE
     flask_app.config['RESTPLUS_MASK_SWAGGER'] = setting.RESTPLUS_MASK_SWAGGER
     flask_app.config['ERROR_404_HELP'] = setting.RESTPLUS_ERROR_404_HELP
-
-
 
 def initialize_app(flask_app):
     configure_app(flask_app)
@@ -48,19 +49,19 @@ def initialize_app(flask_app):
 #     r = e.esp_insert(e,e.get_esp_results(e))
 #     return r
 
-def schedule ():
-    executors = {
-        'default': ThreadPoolExecutor(12),
-        'processpool': ProcessPoolExecutor(1)
-    }
-    job_defaults = {
-        'coalesce': True,
-        'max_instances': 2
-    }
-    sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
-    sched.add_job(get_airly, 'interval', minutes=15, id='ailry_insert_to_db_json')
-    sched.add_job(get_esp, 'interval', seconds =5, id='esp_insert_to_db_json')
-    sched.start()
+# def schedule ():
+#     executors = {
+#         'default': ThreadPoolExecutor(12),
+#         'processpool': ProcessPoolExecutor(1)
+#     }
+#     job_defaults = {
+#         'coalesce': True,
+#         'max_instances': 2
+#     }
+#     sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
+#     sched.add_job(get_airly, 'interval', minutes=15, id='ailry_insert_to_db_json')
+#     sched.add_job(get_esp, 'interval', seconds =5, id='esp_insert_to_db_json')
+#     sched.start()
 
 
 if __name__ == '__main__':

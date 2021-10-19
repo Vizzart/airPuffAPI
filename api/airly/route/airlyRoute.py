@@ -8,9 +8,6 @@ from flask_restplus import Resource
 from api.restPlus import api
 from api.airly.model.airlySerializers import  airly_json,airly_error_rate
 
-from werkzeug.exceptions import HTTPException
-import json
-
 log = logging.getLogger(__name__)
 
 ns = api.namespace('airly', description='Get requests from Airly')
