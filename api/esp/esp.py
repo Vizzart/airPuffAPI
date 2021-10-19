@@ -2,12 +2,15 @@
 import configparser
 import requests
 
-from db_connections import con_db
+from db_connections import connectionDataBase
 
 
-class Esp(con_db.DataBaseCon):
+class Esp(connectionDataBase.DataBaseCon):
 
-    def __init__(self,host):
+    def __init__(
+            self,
+            host
+    ):
         self.host = host
 
     def get_config_esp(self):

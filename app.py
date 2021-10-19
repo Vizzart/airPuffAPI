@@ -9,6 +9,8 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 from api.airly import airly
 from api.esp import esp
+from api.restPlus import  api
+from api.airly.route.airlyRoute import  ns as airly_ns
 
 app = Flask(__name__)
 # dodać Logger
@@ -28,22 +30,23 @@ def configure_app(flask_app):
 def initialize_app(flask_app):
     configure_app(flask_app)
     blueprint = Blueprint('api', __name__, url_prefix='/api')
-    # api.add_namespace(airly)
-    # api.add_namespace(esp)
-    # api.add_namespace(rpi)
+    api.init_app(blueprint)
+    api.add_namespace(airly_ns)
+    #api.add_namespace(esp)
+    #api.add_namespace(rpi)
     flask_app.register_blueprint(blueprint)
-
-@app.route('/airly/insert', methods= ['GET', 'POST'])
-def get_airly():
-    a = airly.Airly
-    r = a.airly_insert(a, a.get_airly_results(a))
-    return r
-
-@app.route('/esp/insert' , methods= ['GET', 'POST'])
-def get_esp():
-    e = esp.Esp
-    r = e.esp_insert(e,e.get_esp_results(e))
-    return r
+#
+# @app.route('/airly/insert', methods= ['GET', 'POST'])
+# def get_airly():
+#     a = airly.Airly
+#     r = a.airly_insert(a, a.get_airly_results(a))
+#     return r
+#
+# @app.route('/esp/insert' , methods= ['GET', 'POST'])
+# def get_esp():
+#     e = esp.Esp
+#     r = e.esp_insert(e,e.get_esp_results(e))
+#     return r
 
 def schedule ():
     executors = {
@@ -61,6 +64,6 @@ def schedule ():
 
 
 if __name__ == '__main__':
-    schedule()
+    #schedule()
     initialize_app(app)
-    app.run()
+    app.run(debug=setting.FLASK_DEBUG)
