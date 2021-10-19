@@ -9,11 +9,13 @@ class Airly(connectionDataBase.DataBaseCon):
 
     def __init__(
         self,
+        host,
         key,
         latitude,
         longitude,
         distance
     ):
+        self.host
         self.key = key
         self.latitude = latitude
         self.longitude = longitude
@@ -24,7 +26,7 @@ class Airly(connectionDataBase.DataBaseCon):
         """
         config = configparser.ConfigParser()
         config.read('./config.ini')
-        self.host = config.get("ailry", "host")
+        self.host = config.get("airly", "host")
         self.key = config.get("airly", "key")
         self.latitude = config.get("airly","latitude")
         self.longitude = config.get("airly", "longitude")
@@ -42,3 +44,4 @@ class Airly(connectionDataBase.DataBaseCon):
         data['apikey'] = key
         r= requests.get(api_url,headers= data)
         return r.json(), r.status_code
+

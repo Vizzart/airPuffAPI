@@ -66,4 +66,4 @@ def schedule ():
 if __name__ == '__main__':
     #schedule()
     initialize_app(app)
-    app.run(debug=setting.FLASK_DEBUG)
+    app.run()#debug=setting.FLASK_DEBUG)
