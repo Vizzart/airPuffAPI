@@ -1,10 +1,10 @@
-from flask_restplus import fields
+from flask_restx import fields
 from api.restPlus import api
 
-airly_json = api.model('airly_json', {
+airly_json = api.model('airlyController', {
    'current' : fields.String(required= True, attribute = 'current')
 })
 
-airly_error_rate = api.model ('airly_json_limite',{
+airly_error_rate = api.model ('airlyErrorController',{
    'message': fields.String
 })
