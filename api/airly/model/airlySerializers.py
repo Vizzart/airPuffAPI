@@ -1,5 +1,5 @@
 from flask_restx import fields
-from api.restPlus import api
+from api.restX import api
 
 airly_json = api.model('airlyController', {
    'current' : fields.String(required= True, attribute = 'current')

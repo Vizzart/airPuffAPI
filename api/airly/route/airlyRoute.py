@@ -1,11 +1,8 @@
-import traceback
 import logging
-import xmltodict
-import json
 
 from api.airly import airly
 from flask_restx import Resource
-from api.restPlus import api
+from api.restX import api
 from api.airly.model.airlySerializers import  airly_json,airly_error_rate
 
 log = logging.getLogger(__name__)

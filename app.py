@@ -9,7 +9,7 @@ from flask import Blueprint
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
-from api.restPlus import  api
+from api.restX import  api
 from api.airly.route.airlyRoute import  ns as airly_ns
 
 app = Flask(__name__)
