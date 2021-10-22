@@ -11,7 +11,6 @@ from sqlalchemy.orm import Session
 
 
 class DataBaseCon(object):
-    #zmienne klasy
     base = declarative_base()
     j_table = Table(
         "temp_json_status", base.metadata
@@ -37,7 +36,7 @@ class DataBaseCon(object):
         return user, passwd, host, port, db_name
 
     def dbconnect(self):
-        config_list = self.config_db(self)
+        config_list = self.config_db()
         user = config_list[0]  # self.user
         passwd = config_list[1]  # self.passwd
         host = config_list[2]  # self.host
@@ -49,7 +48,7 @@ class DataBaseCon(object):
         return engine
 
     def airly_insert(self, json_airly):
-        engine = self.dbconnect(self)
+        engine = self.dbconnect()
         json_string = json.dumps(json_airly)
         current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         api_name = 'airly'

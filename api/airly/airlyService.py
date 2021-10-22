@@ -5,8 +5,6 @@ import requests
 from db_connections import  connectionDataBase
 
 class Airly(connectionDataBase.DataBaseCon):
-
-
     def __init__(
         self,
         host,
@@ -20,8 +18,9 @@ class Airly(connectionDataBase.DataBaseCon):
         self.latitude = latitude
         self.longitude = longitude
         self.distance = distance
+        self.setConfigAirlyConnection()
 
-    def get_config_airly(self):
+    def setConfigAirlyConnection(self):
         """
         """
         config = configparser.ConfigParser()
@@ -32,8 +31,8 @@ class Airly(connectionDataBase.DataBaseCon):
         self.longitude = config.get("airly", "longitude")
         self.distance = config.get("airly", "distance")
 
-    def get_airly_results(self):
-        self.get_config_airly(self)
+    def getAirlyResults(self):
+        self.setConfigAirlyConnection()
         host = self.host
         key = self.key
         latitude = self.latitude
@@ -42,6 +41,6 @@ class Airly(connectionDataBase.DataBaseCon):
         api_url =f"""{host}measurements/nearest?lat={latitude}&lng={longitude}&maxDistanceKM={distance}"""
         data = {'Accept': 'application/json'}
         data['apikey'] = key
-        r= requests.get(api_url,headers= data)
-        return r.json(), r.status_code
-
+        print(api_url)
+        response= requests.get(api_url,headers= data)
+        return response.json(), response.status_code

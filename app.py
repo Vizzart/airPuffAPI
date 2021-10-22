@@ -10,7 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 from api.restX import  api
-from api.airly.route.airlyRoute import  ns as airly_ns
+from api.airly.end.airlyController import  ns as airly_ns
 
 app = Flask(__name__)
 
@@ -67,4 +67,4 @@ def initialize_app(flask_app):
 if __name__ == '__main__':
     #schedule()
     initialize_app(app)
-    app.run()#debug=setting.FLASK_DEBUG)
+    app.run(debug=setting.FLASK_DEBUG)
