@@ -1,3 +1,4 @@
+# coding=utf-8
 from flask_restx import fields
 from api.restX import api
 

@@ -13,12 +13,11 @@ class Airly(connectionDataBase.DataBaseCon):
         longitude,
         distance
     ):
-        self.host
+        self.host = host
         self.key = key
         self.latitude = latitude
         self.longitude = longitude
         self.distance = distance
-        self.setConfigAirlyConnection()
 
     def setConfigAirlyConnection(self):
         """
@@ -41,6 +40,5 @@ class Airly(connectionDataBase.DataBaseCon):
         api_url =f"""{host}measurements/nearest?lat={latitude}&lng={longitude}&maxDistanceKM={distance}"""
         data = {'Accept': 'application/json'}
         data['apikey'] = key
-        print(api_url)
         response= requests.get(api_url,headers= data)
         return response.json(), response.status_code

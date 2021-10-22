@@ -7,15 +7,15 @@ from api.airly.airlySerializers import  airlyJson,airlyError
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('airly', description='Get requests from Airly')
+ns = api.namespace('airly', description='Get requests from Airly and insert into Database ')
 
 
 
 @ns.route('/insert')
 class AirlyResource(Resource,airlyService.Airly):
     """
-    response[0] -status_code
-    response[1] -
+    response[0] -json
+    response[1] - json status_code
     """
     @ns.response(code=201, model = airlyJson, description='Create')
     @ns.response(code=400, description='Bad Request')
@@ -27,13 +27,13 @@ class AirlyResource(Resource,airlyService.Airly):
     @ns.response(code=500, description='Internal Server Error')
     def post(self):
         response = super().getAirlyResults()
-        super().airly_insert(response[0])
+        super().airly_insert(response)
         #change status get from airly to 201
         if response[1] == 200:
             status_code = 201
             return marshal(response[0], airlyJson), status_code
         else:
-            return marshal(response[0],airlyError  ),response[1]
+            return marshal(response[0],airlyError  ), response[1]
 
 
 
