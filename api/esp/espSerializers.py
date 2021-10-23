@@ -2,23 +2,22 @@
 from flask_restx import fields
 from api.restX import api
 
-espTaskValues = api.model ('Value', {
+espValue = api.model ('espValue', {
     'ValueNumber' : fields.Integer,
     'Name' : fields.String,
     'Value': fields.String
 })
 
 
-espLoop = api.model ('TaskValues', {
-    'TaskValues' : fields.List(fields.Nested(espTaskValues))
+espTaskValues = api.model ('espTaskValues', {
+    'TaskValues' : fields.List(fields.Nested(espValue))
 })
 
 
-espJson = api.model('Sensors', {
-         'Sensors' : fields.List(fields.Nested(espLoop))#fields.List(fields.Nested(espLoop,required=True))
-
+espJson = api.model('espSensors', {
+    'Sensors' : fields.List(fields.Nested(espTaskValues))
 })
 
-espError = api.model ('EspError',{
-   'message': fields.String
+espError = api.model ('espError',{
+    'message': fields.String
 })

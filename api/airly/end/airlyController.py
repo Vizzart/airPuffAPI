@@ -7,7 +7,7 @@ from api.airly.airlySerializers import  airlyJson,airlyError
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('airly', description='Get requests from Airly and insert into Database ')
+ns = api.namespace('Airly', description='Adding new measurements to the database.')
 
 
 

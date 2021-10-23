@@ -26,5 +26,5 @@ class Esp(connectionDataBase.DataBaseCon):
         esp_url = f"http://{host}/json?view=sensorupdate"
         data = {'Accept': 'application/json'}
         response = requests.get(esp_url,headers= data)
+        print(response)
         return response.json(), response.status_code
-
