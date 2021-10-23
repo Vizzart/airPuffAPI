@@ -1,6 +1,7 @@
 # coding=utf-8
 import configparser
 import json
+import logging
 
 from datetime import datetime
 from sqlalchemy import create_engine
@@ -9,9 +10,9 @@ from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB, INTEGER, VARC
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 
+log = logging.getLogger(__name__)
 
 class DataBaseCon(object):
-    #zmienne klasy
     base = declarative_base()
     j_table = Table(
         "temp_json_status", base.metadata
@@ -37,7 +38,7 @@ class DataBaseCon(object):
         return user, passwd, host, port, db_name
 
     def dbconnect(self):
-        config_list = self.config_db(self)
+        config_list = self.config_db()
         user = config_list[0]  # self.user
         passwd = config_list[1]  # self.passwd
         host = config_list[2]  # self.host
@@ -48,9 +49,9 @@ class DataBaseCon(object):
         )
         return engine
 
-    def airly_insert(self, json_airly):
-        engine = self.dbconnect(self)
-        json_string = json.dumps(json_airly)
+    def airly_insert(self, airlyResponse):
+        engine = self.dbconnect()
+        json_string = json.dumps(airlyResponse[0])
         current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         api_name = 'airly'
         # self.dbconnect(self)
@@ -59,33 +60,31 @@ class DataBaseCon(object):
                 date_current=current_date_string,
                 json_text=json_string,
                 api_name=api_name,
-                status='200'
+                status=airlyResponse[1]
             )
             session.execute(statement)
             session.commit()
             session.close()
-        print('INSET AIRLY- TRUE ' + current_date_string)
-        return json_airly
+        print('INSET AIRLY'  + f'status code:{airlyResponse[1]} -> current date :' + current_date_string)
 
-    def esp_insert(self, json_esp):
-        engine = self.dbconnect(self)
+    def espInsert(self, espResponse):
+        engine = self.dbconnect()
         self.engine = engine
-        json_string = json.dumps(json_esp[0])
+        json_string = json.dumps(espResponse[0])
         current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         api_name = 'esp'
-        self.dbconnect(self)
+        self.dbconnect()
         with Session(engine) as session:
             statement = self.j_table.insert().values(
                 date_current=current_date_string,
                 json_text=json_string,
                 api_name=api_name,
-                status=json_esp[1]
+                status=espResponse[1]
             )
             session.execute(statement)
             session.commit()
             session.close()
-        print('INSET ESP- TRUE ' + current_date_string)
-        return json_esp
+        print('ESP INSERT->' + f'status code:{espResponse[1]} -> current date : ' + current_date_string)
 
 #
 #
@@ -126,8 +125,8 @@ class DataBaseCon(object):
 #
 # @dbconnect
 # def airly_insert(engine):
-#     json_airly = airly.get_airly_results()
-#     json_string = json.dumps(json_airly)
+#     airly = airly.get_airly_results()
+#     json_string = json.dumps(airly)
 #     current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 #     api_name = 'airly'
 #     statment = j_table.insert().values(
@@ -138,12 +137,12 @@ class DataBaseCon(object):
 #     )
 #     engine.execute(statment)
 #     print('INSET AIRLY- TRUE ' + current_date_string)
-#     return json_airly
+#     return airly
 #
 # @dbconnect
 # def esp_insert(engine):
-#     json_esp = esp.get_esp_results()
-#     json_string = json.dumps(json_esp)
+#     jsonEsp = esp.get_esp_results()
+#     json_string = json.dumps(jsonEsp)
 #     current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 #     api_name = 'esp'
 #     statment = j_table.insert().values(
@@ -154,4 +153,4 @@ class DataBaseCon(object):
 #     )
 #     engine.execute(statment)
 #     print('INSET ESP- TRUE ' + current_date_string)
-#     return json_esp
+#     return jsonEsp

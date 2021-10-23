@@ -1,9 +1,11 @@
 # coding=utf-8
 import configparser
 import requests
-
+import logging
 from db_connections import connectionDataBase
+import json
 
+log = logging.getLogger(__name__)
 
 class Esp(connectionDataBase.DataBaseCon):
 
@@ -13,17 +15,16 @@ class Esp(connectionDataBase.DataBaseCon):
     ):
         self.host = host
 
-    def get_config_esp(self):
+    def getConfigEsp(self):
         config = configparser.ConfigParser()
         config.read('./config.ini')
         self.host = config.get("esp", "host")
 
-    def get_esp_results(self):
-        self.get_config_esp(self)
+    def getEspResults(self):
+        self.getConfigEsp()
         host = self.host
-        try:
-            esp_url = f"http://{host}/json?view=sensorupdate"
-            r = requests.get(esp_url)
-            return r.json(), r.status_code
-        except requests.exceptions.ConnectionError:
-            return "Connection refused", r.status_code
+        esp_url = f"http://{host}/json?view=sensorupdate"
+        data = {'Accept': 'application/json'}
+        response = requests.get(esp_url,headers= data)
+        return response.json(), response.status_code
+

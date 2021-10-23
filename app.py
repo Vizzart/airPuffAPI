@@ -1,21 +1,23 @@
 import setting
 import os
 import logging.config
-
-
 from flask import Flask
 from flask import Blueprint
 
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 from api.restX import  api
-from api.airly.route.airlyRoute import  ns as airly_ns
+from api.airly.end.airlyController import  ns as airly_ns
+from api.esp.end.espController import ns as esp_ns
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
+from api.esp.end.espController import EspResource
+
 
 app = Flask(__name__)
 
-logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), 'logging.conf'))
-logging.config.fileConfig(logging_conf_path)
+loggingConfPath = os.path.normpath(os.path.join(os.path.dirname(__file__), 'logging.conf'))
+logging.config.fileConfig(loggingConfPath)
 log = logging.getLogger(__name__)
 
 def configure_app(flask_app):
@@ -33,38 +35,26 @@ def initialize_app(flask_app):
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
     api.add_namespace(airly_ns)
-    #api.add_namespace(esp)
+    api.add_namespace(esp_ns)
     #api.add_namespace(rpi)
     flask_app.register_blueprint(blueprint)
-#
-# @app.route('/airly/insert', methods= ['GET', 'POST'])
-# def get_airly():
-#     a = airly.Airly
-#     r = a.airly_insert(a, a.get_airly_results(a))
-#     return r
-#
-# @app.route('/esp/insert' , methods= ['GET', 'POST'])
-# def get_esp():
-#     e = esp.Esp
-#     r = e.esp_insert(e,e.get_esp_results(e))
-#     return r
 
-# def schedule ():
-#     executors = {
-#         'default': ThreadPoolExecutor(12),
-#         'processpool': ProcessPoolExecutor(1)
-#     }
-#     job_defaults = {
-#         'coalesce': True,
-#         'max_instances': 2
-#     }
-#     sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
-#     sched.add_job(get_airly, 'interval', minutes=15, id='ailry_insert_to_db_json')
-#     sched.add_job(get_esp, 'interval', seconds =5, id='esp_insert_to_db_json')
-#     sched.start()
+def schedule():
+    executors = {
+        'default': ThreadPoolExecutor(12),
+        'processpool': ProcessPoolExecutor(1)
+    }
+    job_defaults = {
+        'coalesce': True,
+        'max_instances': 2
+    }
+    sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
+    #sched.add_job(get_airly, 'interval', minutes=15, id='ailry_insert_to_db_json')
+    #sched.add_job(, 'interval', seconds =5, id='esp_insert_to_db_json')
+    sched.start()
 
 
 if __name__ == '__main__':
-    #schedule()
+    schedule()
     initialize_app(app)
-    app.run()#debug=setting.FLASK_DEBUG)
+    app.run(debug=setting.FLASK_DEBUG)
