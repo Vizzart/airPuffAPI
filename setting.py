@@ -1,6 +1,7 @@
 #Flask settings
 FLASK_APP = 'app.py'
-FLASK_SERVER_NAME = 'localhost:8888'
+FLASK_SERVER_NAME = 'localhost'
+FLASK_PORT= 5000
 FLASK_DEBUG = True
 FLASK_ENV = 'development'
 JSONIFY_PRETTYPRINT_REGULAR = True

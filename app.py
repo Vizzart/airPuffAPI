@@ -41,4 +41,4 @@ def initialize_app(flaskApp):
 
 if __name__ == '__main__':
     initialize_app(app)
-    app.run()#debug=setting.FLASK_DEBUG)
+    app.run(host=setting.FLASK_SERVER_NAME ,port = setting.FLASK_PORT)
