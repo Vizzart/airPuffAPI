@@ -1,6 +1,10 @@
 # coding=utf-8
+
 import configparser
+import json
 import requests
+from datetime import datetime
+from sqlalchemy.orm import Session
 
 from db_connections import  connectionDataBase
 
@@ -42,3 +46,20 @@ class Airly(connectionDataBase.DataBaseCon):
         data['apikey'] = key
         response= requests.get(api_url,headers= data)
         return response.json(), response.status_code
+
+    def airly_insert(self, airlyResponse):
+        engine = self.dbconnect()
+        json_string = json.dumps(airlyResponse[0])
+        current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        api_name = 'airly'
+        # self.dbconnect(self)
+        with Session(engine) as session:
+            statement = self.j_table.insert().values(
+                date_current=current_date_string,
+                json_text=json_string,
+                api_name=api_name,
+                status=airlyResponse[1]
+            )
+            session.execute(statement)
+            session.commit()
+            session.close()

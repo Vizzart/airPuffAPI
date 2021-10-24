@@ -10,7 +10,7 @@ airlyValue = api.inherit('airlyValues', {
 
 airlyIndexes = api.inherit('airlyIndex', {
    'name' : fields.String,
-   'value': fields.String,
+   'value': fields.Float,
    'level': fields.String,
    'description' : fields.String,
    'advice' : fields.String,
@@ -20,8 +20,8 @@ airlyIndexes = api.inherit('airlyIndex', {
 airlyStandard = api.inherit ('airlyStandard', {
 'name' : fields.String,
 'pollutant' : fields.String,
-'limit' : fields.String,
-'percent' : fields.String,
+'limit' : fields.Float,
+'percent' : fields.Float,
 'averaging' : fields.String
 })
 

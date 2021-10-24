@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table, Column
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB, INTEGER, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session
+
 
 log = logging.getLogger(__name__)
 
@@ -51,39 +51,24 @@ class DataBaseCon(object):
         )
         return engine
 
-    def airly_insert(self, airlyResponse):
-        engine = self.dbconnect()
-        json_string = json.dumps(airlyResponse[0])
-        current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        api_name = 'airly'
-        # self.dbconnect(self)
-        with Session(engine) as session:
-            statement = self.j_table.insert().values(
-                date_current=current_date_string,
-                json_text=json_string,
-                api_name=api_name,
-                status=airlyResponse[1]
-            )
-            session.execute(statement)
-            session.commit()
-            session.close()
+
         #print('INSET AIRLY'  +f'{airlyResponse[0]}' f'status code:{airlyResponse[1]} -> current date :' + current_date_string)
-
-    def espInsert(self, espResponse):
-        engine = self.dbconnect()
-        self.engine = engine
-        json_string = json.dumps(espResponse[0])
-        current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        api_name = 'esp'
-        with Session(engine) as session:
-            statement = self.j_table.insert().values(
-                date_current=current_date_string,
-                json_text=json_string,
-                api_name=api_name,
-                status=espResponse[1]
-            )
-            session.execute(statement)
-            session.commit()
-            session.close()
-        #print('ESP ->' +f'{espResponse[0]}' + f'status code:{espResponse[1]} -> current date : ' + current_date_string)
-
+    #
+    # def espInsert(self, espResponse):
+    #     engine = self.dbconnect()
+    #     self.engine = engine
+    #     json_string = json.dumps(espResponse[0])
+    #     current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    #     api_name = 'esp'
+    #     with Session(engine) as session:
+    #         statement = self.j_table.insert().values(
+    #             date_current=current_date_string,
+    #             json_text=json_string,
+    #             api_name=api_name,
+    #             status=espResponse[1]
+    #         )
+    #         session.execute(statement)
+    #         session.commit()
+    #         session.close()
+    #     #print('ESP ->' +f'{espResponse[0]}' + f'status code:{espResponse[1]} -> current date : ' + current_date_string)
+    #

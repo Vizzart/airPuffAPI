@@ -11,14 +11,15 @@ loggingConfPath = os.path.normpath(os.path.join(os.path.dirname(__file__), 'logg
 logging.config.fileConfig(loggingConfPath)
 log = logging.getLogger(__name__)
 
+host = setting.FLASK_SERVER_NAME
+port = setting.FLASK_PORT
 def espJob():
-    api_url = 'http://192.168.0.38:5000/api/ESP/insert'
-
+    api_url = f'http://{host}:{port}/api/ESP/insert/new'
     requests.post(api_url)
 
 
 def ailryJob():
-    api_url = 'http://192.168.0.38:5000/api/Airly/insert'
+    api_url = f'http://{host}:{port}/api/Airly/insert'
     requests.post(api_url)
 
 def schedule():
