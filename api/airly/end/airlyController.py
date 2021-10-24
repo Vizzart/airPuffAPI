@@ -36,7 +36,3 @@ class AirlyResource(Resource,airlyService.Airly):
             return marshal(response[0],airlyError  ), response[1]
 
 
-
-@api.errorhandler
-def handle_no_result_exception(error):
-    return {'message':  str(error)}, getattr(error, 'code', 500)
