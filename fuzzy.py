@@ -2,6 +2,9 @@ import numpy as np
 import skfuzzy as fuzz
 
 
+# from skfuzzy import control as ctrl
+
+
 def calculateMandami(espPm25CurrentValue,espPm10CurrentValue):
     # normy pyłów
     pm10normforESP = 50.0
@@ -25,11 +28,11 @@ def calculateMandami(espPm25CurrentValue,espPm10CurrentValue):
     esp_pm25_hi = fuzz.trimf(esp_pm2_5, [10, 15, 20])
     esp_pm25_very_hi = fuzz.trimf(esp_pm2_5, [15, 25, 25])
 
-    fun_level_1 = fuzz.trimf(fun, [0, 0, 550])
-    fun_level_2 = fuzz.trimf(fun, [0, 650, 750])
-    fun_level_3 = fuzz.trimf(fun, [650, 750, 850])
-    fun_level_4 = fuzz.trimf(fun, [850, 950 , 1000])
-    fun_level_5 = fuzz.trimf(fun, [950, 1024, 1024])
+    fun_level_1 = fuzz.trimf(fun, [0, 0, 240])
+    fun_level_2 = fuzz.trimf(fun, [0, 240, 425])
+    fun_level_3 = fuzz.trimf(fun, [300, 425, 600])
+    fun_level_4 = fuzz.trimf(fun, [450, 650 , 850])
+    fun_level_5 = fuzz.trimf(fun, [650, 1024, 1024])
 
     # pobrane wartosci z skryptu connectDataBase
     # aktualne wartosci z ESP
