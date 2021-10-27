@@ -2,9 +2,6 @@ import numpy as np
 import skfuzzy as fuzz
 
 
-# from skfuzzy import control as ctrl
-
-
 def calculateMandami(espPm25CurrentValue,espPm10CurrentValue):
     # normy pyłów
     pm10normforESP = 50.0

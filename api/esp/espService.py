@@ -55,11 +55,9 @@ class Esp(connectionDataBase.DataBaseCon):
     def espGetLastFromDataBase(self):
         engine = self.dbconnect()
         with Session(engine) as session:
-                #select([self.esp_table]).order_by(self.esp_table.columns.date_current.desc())
-                #('select pm_10,pm_2_5 from esp_sensor order by date_current desc limit 1')
-        #session.query((self.esp_table).first())
-            data =session.query(self.esp_table.c.pm_10,self.esp_table.c.pm_2_5).order_by(self.esp_table.c.date_current.desc()).first()
-
+            data =session.query\
+                (self.esp_table.c.pm_10,self.esp_table.c.pm_2_5).order_by\
+                (self.esp_table.c.date_current.desc()).first()
         session.commit()
         session.close()
         return data
