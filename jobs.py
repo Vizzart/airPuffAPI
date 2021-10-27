@@ -18,16 +18,20 @@ host = setting.FLASK_SERVER_NAME
 port = setting.FLASK_PORT
 
 
-def esp():
-    obj = Esp(Esp.getConfigEspFromFile)
-    obj.espInsertToDataBase( obj.getResultFromESP())
+def espInsert():
+    try:
+        obj = Esp(Esp.getConfigEspFromFile)
+        obj.espInsertToDataBase( obj.getResultFromESP())
+    except:
+        espReboot()
 
+def ailryInsert():
 
-def ailry():
     obj = Airly(Airly.getConfigEspFromFile)
     obj.airly_insert(obj.getAirlyResults())
 
-def pwmJob():
+
+def setPwm():
     obj =  Esp(Esp.getConfigEspFromFile)
     frame = obj.espGetLastFromDataBase()
     print(frame[0],frame[1])
@@ -36,6 +40,12 @@ def pwmJob():
     os.system("gpio mode 23 pwm ")
     set_pwm = "gpio pwm 23 " + str(resultMandami)
     os.system(set_pwm)
+
+def espReboot():
+    obj = Esp(Esp.getConfigEspFromFile)
+    esp_url = f"http://{obj.host}/?cmd=reboot"
+    data = {'Accept': 'application/json'}
+    requests.get(esp_url,headers= data)
 
 
 def schedule():
@@ -48,7 +58,7 @@ def schedule():
         'max_instances': setting.MAX_INSTANCES
     }
     sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
-    sched.add_job(esp, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
-    sched.add_job(ailry, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
-    sched.add_job(pwmJob, 'interval', seconds=4, id='setPwm')
+    sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
+    sched.add_job(ailryInsert, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
+    sched.add_job(setPwm, 'interval', seconds=4, id='setPwm')
     sched.start()
