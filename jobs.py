@@ -34,7 +34,9 @@ def pwmJob():
     resultMandami = calculateMandami(frame[0],frame[1])
     print(resultMandami)
     os.system("gpio mode 23 pwm ")
-    os.system("gpio pwm 23 pwm " +str(resultMandami))
+    set_pwm = "gpio pwm 23 " + str(resultMandami)
+    os.system(set_pwm)
+
 
 def schedule():
     executors = {
