@@ -4,10 +4,10 @@ import logging.config
 from flask import Flask
 from flask import Blueprint
 import api.esp.espService
-from jobs import schedule
+#from jobs import schedule
 from api.restX import  api
-from api.airly.end.airlyController import  ns as airly_ns
-from api.esp.end.espController import ns as esp_ns
+from api.airly.end.airlyRoute import  ns as airly_ns
+from api.esp.end.espRoute import ns as esp_ns
 
 app = Flask(__name__)
 
@@ -37,10 +37,9 @@ def initialize_app(flaskApp):
     flaskApp.register_blueprint(blueprint)
 
 
-
+import jobs
 
 if __name__ == '__main__':
-
-    schedule()
+    jobs.schedule()
     initialize_app(app)
     app.run(host=setting.FLASK_SERVER_NAME ,port = setting.FLASK_PORT)

@@ -2,10 +2,12 @@
 import configparser
 import requests
 import logging
+import pandas as pd
 from db_connections import connectionDataBase
 
 from datetime import datetime
 from sqlalchemy.orm import Session
+from sqlalchemy import select, desc
 
 import json
 
@@ -49,9 +51,15 @@ class Esp(connectionDataBase.DataBaseCon):
             session.execute(statement)
             session.commit()
             session.close()
-        # print('ESP ->' +f'{espResponse[0]}' + f'status code:{espResponse[1]} -> current date : ' + current_date_string)
+
     def espGetLastFromDataBase(self):
         engine = self.dbconnect()
         with Session(engine) as session:
-            sql = ('select * from esp order by date_current desc')
-            statement = sql
+                #select([self.esp_table]).order_by(self.esp_table.columns.date_current.desc())
+                #('select pm_10,pm_2_5 from esp_sensor order by date_current desc limit 1')
+        #session.query((self.esp_table).first())
+            data =session.query(self.esp_table.c.pm_10,self.esp_table.c.pm_2_5).order_by(self.esp_table.c.date_current.desc()).first()
+
+        session.commit()
+        session.close()
+        return data

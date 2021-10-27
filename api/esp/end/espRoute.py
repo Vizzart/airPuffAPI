@@ -14,7 +14,7 @@ class EspGetFromDataBase(Resource,espService.Esp):
     """
 
     """
-    @ns.response(code=201,model = espJson, description='Create')
+    @ns.response(code=201, description='Create')
     @ns.response(code=400, description='Bad Request')
     @ns.response(code=401, description='Unauthorized')
     @ns.response(code=404, description='Not Found')
@@ -24,9 +24,8 @@ class EspGetFromDataBase(Resource,espService.Esp):
     @ns.response(code=500, description='Internal Server Error')
 
     def get(self):
-        pass
-
-
+        response = super().espGetLastFromDataBase()
+        print (response)
 
 @ns.route('/insert/new')
 class EspInsert(Resource,espService.Esp):

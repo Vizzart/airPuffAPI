@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column
-from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB, INTEGER, VARCHAR
+from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB, INTEGER, VARCHAR, NUMERIC
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -24,6 +24,14 @@ class DataBaseCon(object):
         , Column('json_text', JSONB)
         , Column('api_name', VARCHAR)
         , Column('status', INTEGER)
+    )
+    esp_table = Table(
+        "esp_sensor", base.metadata
+        , Column('id', INTEGER)
+        , Column('uuid', UUID)
+        , Column('date_current', TIMESTAMP)
+        , Column('pm_10', NUMERIC)
+        , Column('pm_2_5', NUMERIC)
     )
 
     def __init__(self):

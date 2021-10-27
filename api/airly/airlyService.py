@@ -23,7 +23,7 @@ class Airly(connectionDataBase.DataBaseCon):
         self.longitude = longitude
         self.distance = distance
 
-    def setConfigAirlyConnection(self):
+    def getConfigEspFromFile(self):
         """
         """
         config = configparser.ConfigParser()
@@ -35,7 +35,7 @@ class Airly(connectionDataBase.DataBaseCon):
         self.distance = config.get("airly", "distance")
 
     def getAirlyResults(self):
-        self.setConfigAirlyConnection()
+        self.getConfigEspFromFile()
         host = self.host
         key = self.key
         latitude = self.latitude
