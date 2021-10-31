@@ -73,7 +73,7 @@ def schedule():
         'max_instances': setting.MAX_INSTANCES
     }
     sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
-    sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
+    #sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
     sched.add_job(ailryInsert, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
-    sched.add_job(setPwm, 'interval', seconds=4, id='setPwm')
+    #sched.add_job(setPwm, 'interval', seconds=4, id='setPwm')
     sched.start()

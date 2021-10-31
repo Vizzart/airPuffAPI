@@ -2,7 +2,6 @@
 import configparser
 import json
 import logging
-
 from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column
@@ -36,6 +35,7 @@ class DataBaseCon(object):
 
     def __init__(self):
         self.engine
+
 
     def config_db(self):
         config = configparser.ConfigParser()

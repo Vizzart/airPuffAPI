@@ -5,8 +5,20 @@ from flask_restx import Resource, marshal
 from api.restX import api
 from api.esp.espSerializers import espJson, espError
 
+auth= {
+    'Basic Auth': {
+        'type' : 'basic',
+        'in' : 'header',
+        'description' : 'auth'
 
-ns = api.namespace('ESP',description = 'Adding new measurements to the database.')
+    }
+
+
+}
+
+ns = api.namespace('ESP',description = 'Adding new measurements to the database.',
+                   authorizations=auth,
+                   security= 'Basic Auth')
 
 
 @ns.route('/last')
@@ -27,6 +39,7 @@ class EspGetFromDataBase(Resource,espService.Esp):
         response = super().espGetLastFromDataBase()
         print (response)
 
+@ns.doc(security='Basic Auth')
 @ns.route('/insert/new')
 class EspInsert(Resource,espService.Esp):
     """
