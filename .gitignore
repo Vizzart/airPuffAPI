@@ -143,5 +143,6 @@ config.ini
 
 #windows and mac os working
  .idea/
+ .env
 
 

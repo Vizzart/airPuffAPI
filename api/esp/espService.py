@@ -36,7 +36,7 @@ class Esp(connectionDataBase.DataBaseCon):
         return response.json(), response.status_code
 
     def espInsertToDataBase(self, espResponse):
-        engine = self.dbconnect()
+        engine = self.createEngine()
         #self.engine = engine
         json_string = json.dumps(espResponse[0])
         current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -53,7 +53,7 @@ class Esp(connectionDataBase.DataBaseCon):
             session.close()
 
     def espGetLastFromDataBase(self):
-        engine = self.dbconnect()
+        engine = self.createEngine()
         with Session(engine) as session:
             data =session.query\
                 (self.esp_table.c.pm_10,self.esp_table.c.pm_2_5).order_by\

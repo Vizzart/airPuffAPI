@@ -1,13 +1,12 @@
 # coding=utf-8
 import configparser
-import json
 import logging
-from datetime import datetime
+import os
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP, JSONB, INTEGER, VARCHAR, NUMERIC
 from sqlalchemy.ext.declarative import declarative_base
-
+from dotenv import load_dotenv
 
 log = logging.getLogger(__name__)
 
@@ -35,28 +34,45 @@ class DataBaseCon(object):
 
     def __init__(self):
         self.engine
+        self.connectionString
+        self.dbHost
+        self.dbUser
+        self.dbPasswd
+        self.dbPort
+        self.dbName
 
 
-    def config_db(self):
-        config = configparser.ConfigParser()
-        config.read('./config.ini')
-        user = config.get("db", "user")
-        passwd = config.get("db", "passwd")
-        host = config.get("db", "host")
-        port = config.get("db", "port", raw=True)
-        db_name = config.get("db", "db_name")
-        return user, passwd, host, port, db_name
+    #
+    #
+    # def config_db(self):
+    #     config = configparser.ConfigParser()
+    #     config.read('./config.ini')
+    #     user = config.get("db", "user")
+    #     passwd = config.get("db", "passwd")
+    #     host = config.get("db", "host")
+    #     port = config.get("db", "port", raw=True)
+    #     db_name = config.get("db", "db_name")
+    #     return user, passwd, host, port, db_name
 
-    def dbconnect(self):
-        config_list = self.config_db()
-        user = config_list[0]  # self.user
-        passwd = config_list[1]  # self.passwd
-        host = config_list[2]  # self.host
-        port = config_list[3]  # self.port
-        db = config_list[4]  # self.db_name
+    def createEngine(self):
+        load_dotenv()
+        self.connectionString = os.getenv("CONNECTION_STRING")
+        self.dbHost = os.getenv("DB_HOST")
+        self.dbUser = os.getenv("DB_USER")
+        self.dbPasswd = os.getenv("DB_PASSWD")
+        self.dbPort = os.getenv("DB_PORT")
+        self.dbName = os.getenv("DB_NAME")
+        # config_list = self.config_db()
+        # user = config_list[0]  # self.user
+        # passwd = config_list[1]  # self.passwd
+        # host = config_list[2]  # self.host
+        # port = config_list[3]  # self.port
+        # db = config_list[4]  # self.db_name
+        # print(self.dbName)
         engine = create_engine(
-            'postgresql://' + user + ':' + passwd + '@' + host + ':' + port + '/' + db
-        )
+             'postgresql://' + self.dbUser + ':' + self.dbPasswd +\
+             '@' + self.dbHost + ':' + self.dbPort + '/' + self.dbName
+         )
         return engine
 
 

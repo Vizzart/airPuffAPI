@@ -48,7 +48,7 @@ class Airly(connectionDataBase.DataBaseCon):
         return response.json(), response.status_code
 
     def airly_insert(self, airlyResponse):
-        engine = self.dbconnect()
+        engine = self.createEngine()
         json_string = json.dumps(airlyResponse[0])
         current_date_string = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         api_name = 'airly'
