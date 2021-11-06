@@ -23,11 +23,6 @@ port = setting.FLASK_PORT
 
 
 def espInsert():
-#     response = EspService(EspService.getConfigEspFromFile)
-#     print(response.getDataFromEsp())
-#     temp = TempJson
-#     temp.createEngine(temp)
-#     temp.InsertResultJsonToDb(temp,response.getDataFromEsp(),'esp')
     espRoute.EspInsert().post()
 
 def ailryInsert():
@@ -35,15 +30,14 @@ def ailryInsert():
 
 def setPwm():
     frame = Esp().espGetLastFromDataBase()
+    print(frame[0],frame[1])
+    if (frame[0] != 0) and (frame[1] !=0):
+        resultMandami = calculateMandami(frame[0],frame[1])
+    print(resultMandami)
+    os.system("gpio mode 23 pwm ")
+    set_pwm = "gpio pwm 23 " + str(resultMandami)
+    os.system(set_pwm)
 
-    #print(frame.espGetLastFromDataBase)
-    # print(frame[0],frame[1])
-    # if (frame[0] != 0) and (frame[1] !=0):
-    #     resultMandami = calculateMandami(frame[0],frame[1])
-    # print(resultMandami)
-    # os.system("gpio mode 23 pwm ")
-    # set_pwm = "gpio pwm 23 " + str(resultMandami)
-    # os.system(set_pwm)
 
 def espReboot():
     obj = EspService
