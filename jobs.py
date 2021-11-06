@@ -1,16 +1,15 @@
-import atexit
+
 import logging.config
 import os
 import requests
 import setting
-import sys
 from fuzzy import calculateMandami
 from api.esp.espService import EspService
 from api.esp.end import espRoute
 from api.airly.end import airlyRoute
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
-
+from api.database.models import Esp
 
 
 loggingConfPath = os.path.normpath(os.path.join(os.path.dirname(__file__), 'logging.conf'))
@@ -35,16 +34,16 @@ def ailryInsert():
     airlyRoute.AirlyInsert().post()
 
 def setPwm():
+    frame = Esp().espGetLastFromDataBase()
 
-    obj =  EspService(EspService.getConfigEspFromFile)
-    frame = obj.espGetLastFromDataBase()
-    print(frame[0],frame[1])
-    if (frame[0] != 0) and (frame[1] !=0):
-        resultMandami = calculateMandami(frame[0],frame[1])
-    print(resultMandami)
-    os.system("gpio mode 23 pwm ")
-    set_pwm = "gpio pwm 23 " + str(resultMandami)
-    os.system(set_pwm)
+    #print(frame.espGetLastFromDataBase)
+    # print(frame[0],frame[1])
+    # if (frame[0] != 0) and (frame[1] !=0):
+    #     resultMandami = calculateMandami(frame[0],frame[1])
+    # print(resultMandami)
+    # os.system("gpio mode 23 pwm ")
+    # set_pwm = "gpio pwm 23 " + str(resultMandami)
+    # os.system(set_pwm)
 
 def espReboot():
     obj = EspService

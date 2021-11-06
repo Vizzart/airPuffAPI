@@ -58,9 +58,7 @@ class Esp(connectionDb):
     def espGetLastFromDataBase(self):
         engine = super().createEngine()
         with Session(engine) as session:
-            data = session.query\
-                (self.espSensor.c.pm_10, self.espSensor.c.pm_2_5).order_by\
-                (self.espSensor.c.date_current.desc()).first()
+            data = session.query(self.espSensor.c.pm_10, self.espSensor.c.pm_2_5).order_by(self.espSensor.c.date_current.desc()).first()
         session.commit()
         session.close()
         return data

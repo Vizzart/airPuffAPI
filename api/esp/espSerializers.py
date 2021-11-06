@@ -5,7 +5,7 @@ from api.restX import api
 espValue = api.model ('espValue', {
     'ValueNumber' : fields.Integer,
     'Name' : fields.String,
-    'Value': fields.String
+    'Value': fields.Float
 })
 
 
