@@ -39,6 +39,6 @@ def initialize_app(flaskApp):
 
 
 if __name__ == '__main__':
-    #jobs.schedule()
+    jobs.schedule()
     initialize_app(app)
     app.run(host=setting.FLASK_SERVER_NAME ,port = setting.FLASK_PORT)
