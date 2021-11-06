@@ -1,10 +1,6 @@
 import numpy as np
 import skfuzzy as fuzz
 
-
-# from skfuzzy import control as ctrl
-
-
 def calculateMandami(espPm25CurrentValue,espPm10CurrentValue):
     # normy pyłów
     pm10normforESP = 50.0
@@ -190,6 +186,6 @@ def calculateMandami(espPm25CurrentValue,espPm10CurrentValue):
                 np.fmax(fan_action_23,
                 np.fmax(fan_action_24,fan_action_25)))))))))))))))))))))))))
 
-    funResult = fuzz.defuzz(fun, aggregate, 'lom')
+    funResult = fuzz.defuzz(fun, aggregate, 'centroid')
 
     return funResult

@@ -4,7 +4,7 @@ from api.esp import espService
 from flask_restx import Resource, marshal
 from api.restX import api
 from api.esp.espSerializers import espJson, espError
-
+from api.database import models
 auth= {
     'Basic Auth': {
         'type' : 'basic',
@@ -22,7 +22,7 @@ ns = api.namespace('ESP',description = 'Adding new measurements to the database.
 
 
 @ns.route('/last')
-class EspGetFromDataBase(Resource,espService.Esp):
+class EspGetFromDataBase(Resource, espService.EspService, models.Esp):
     """
 
     """
@@ -40,12 +40,12 @@ class EspGetFromDataBase(Resource,espService.Esp):
         print (response)
 
 @ns.doc(security='Basic Auth')
-@ns.route('/insert/new')
-class EspInsert(Resource,espService.Esp):
+@ns.route('/insert')
+class EspInsert(Resource, espService.EspService, models.TempJson):
     """
 
     """
-    @ns.response(code=201,model = espJson, description='Create')
+    @ns.response(code=201, description='Create')
     @ns.response(code=400, description='Bad Request')
     @ns.response(code=401, description='Unauthorized')
     @ns.response(code=404, description='Not Found')
@@ -55,8 +55,8 @@ class EspInsert(Resource,espService.Esp):
     @ns.response(code=500, description='Internal Server Error')
 
     def post(self):
-        response = super().getResultFromESP()
-        super().espInsertToDataBase(response)
+        response = super().getDataFromEsp()
+        super().InsertResultJsonToDb(response, 'esp')
         print(response)
         if response[1] == 200:
             status_code = 201

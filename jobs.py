@@ -5,8 +5,9 @@ import requests
 import setting
 import sys
 from fuzzy import calculateMandami
-from api.esp.espService import Esp
-from api.airly.airlyService import Airly
+from api.esp.espService import EspService
+from api.esp.end import espRoute
+from api.airly.end import airlyRoute
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
@@ -20,31 +21,22 @@ host = setting.FLASK_SERVER_NAME
 port = setting.FLASK_PORT
 
 
-def exit_handler():
-    os.system("gpio mode 23 pwm ")
-    set_pwm = "gpio pwm 23 0"
-    os.system(set_pwm)
-
-
-atexit.register(exit_handler)
 
 
 def espInsert():
-    try:
-        obj = Esp(Esp.getConfigEspFromFile)
-        obj.espInsertToDataBase( obj.getResultFromESP())
-    except:
-        espReboot()
+#     response = EspService(EspService.getConfigEspFromFile)
+#     print(response.getDataFromEsp())
+#     temp = TempJson
+#     temp.createEngine(temp)
+#     temp.InsertResultJsonToDb(temp,response.getDataFromEsp(),'esp')
+    espRoute.EspInsert().post()
 
 def ailryInsert():
-
-    obj = Airly(Airly.getConfigEspFromFile)
-    obj.airly_insert(obj.getAirlyResults())
-
+    airlyRoute.AirlyInsert().post()
 
 def setPwm():
 
-    obj =  Esp(Esp.getConfigEspFromFile)
+    obj =  EspService(EspService.getConfigEspFromFile)
     frame = obj.espGetLastFromDataBase()
     print(frame[0],frame[1])
     if (frame[0] != 0) and (frame[1] !=0):
@@ -55,8 +47,7 @@ def setPwm():
     os.system(set_pwm)
 
 def espReboot():
-
-    obj = Esp(Esp.getConfigEspFromFile)
+    obj = EspService
     esp_url = f"http://{obj.host}/?cmd=reboot"
     data = {'Accept': 'application/json'}
     requests.get(esp_url,headers= data)

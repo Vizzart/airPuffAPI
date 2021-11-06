@@ -22,10 +22,10 @@ def configure_app(flaskApp):
     flaskApp.config['FLASK_SERVER_NAME'] = setting.FLASK_SERVER_NAME
     flaskApp.config['FLASK_ENV'] = setting.FLASK_ENV
     flaskApp.config['JSONIFY_PRETTYPRINT_REGULAR'] = setting.JSONIFY_PRETTYPRINT_REGULAR
-    flaskApp.config['SWAGGER_UI_DOC_EXPANSION'] = setting.RESTPLUS_SWAGGER_UI_DOC_EXPANSION
-    flaskApp.config['RESTPLUS_VALIDATE'] = setting.RESTPLUS_VALIDATE
-    flaskApp.config['RESTPLUS_MASK_SWAGGER'] = setting.RESTPLUS_MASK_SWAGGER
-    flaskApp.config['ERROR_404_HELP'] = setting.RESTPLUS_ERROR_404_HELP
+    flaskApp.config['SWAGGER_UI_DOC_EXPANSION'] = setting.REST_SWAGGER_UI_DOC_EXPANSION
+    flaskApp.config['REST_VALIDATE'] = setting.REST_VALIDATE
+    flaskApp.config['RESTPLUS_MASK_SWAGGER'] = setting.REST_MASK_SWAGGER
+    flaskApp.config['ERROR_404_HELP'] = setting.REST_ERROR_404_HELP
 
 def initialize_app(flaskApp):
     configure_app(flaskApp)

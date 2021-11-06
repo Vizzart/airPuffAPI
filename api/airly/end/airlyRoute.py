@@ -4,6 +4,7 @@ from api.airly import airlyService
 from flask_restx import Resource,marshal
 from api.restX import api
 from api.airly.airlySerializers import  airlyJson,airlyError
+from api.database import models
 
 log = logging.getLogger(__name__)
 
@@ -12,12 +13,12 @@ ns = api.namespace('Airly', description='Adding new measurements to the database
 
 
 @ns.route('/insert')
-class AirlyResource(Resource,airlyService.Airly):
+class AirlyInsert(Resource,airlyService.Airly,models.TempJson):
     """
     response[0] -json
     response[1] - json status_code
     """
-    @ns.response(code=201, model = airlyJson, description='Create')
+    @ns.response(code=201, description='Create')
     @ns.response(code=400, description='Bad Request')
     @ns.response(code=401, description='Unauthorized')
     @ns.response(code=404, description='Not Found')
@@ -26,8 +27,9 @@ class AirlyResource(Resource,airlyService.Airly):
     @ns.response(code=429, description='Too Many Requests')
     @ns.response(code=500, description='Internal Server Error')
     def post(self):
-        response = super().getAirlyResults()
-        super().airly_insert(response)
+        response = super().getDataFromAirly()
+        super().InsertResultJsonToDb(response, 'airly')
+        print(response)
         #change status get from airly to 201
         if response[1] == 200:
             status_code = 201
