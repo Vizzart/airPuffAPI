@@ -1,14 +1,9 @@
 import numpy as np
 import skfuzzy as fuzz
 
-def calculateMandami(espPm25CurrentValue,espPm10CurrentValue):
-    # normy pyłów
-    pm10normforESP = 50.0
-    pm2_5normforESP = 25.0
-
-    #
-    esp_pm10 = np.arange(0, pm10normforESP, 1)
-    esp_pm2_5 = np.arange(0, pm2_5normforESP, 1)
+def calculateMandami(pm10value, pm2_5value, pm10norm,pm2_5norm):
+    esp_pm10 = np.arange(0, pm10norm, 1)
+    esp_pm2_5 = np.arange(0, pm2_5norm, 1)
     fun = np.arange(0, 1024, 1)
 
     # Generate fuzzy membership functions
@@ -36,17 +31,17 @@ def calculateMandami(espPm25CurrentValue,espPm10CurrentValue):
     # espPm10CurrentValue = 25  # getcurrentPm10fromESP ()
 
 
-    esp_pm10Level_very_lo = fuzz.interp_membership(esp_pm10, esp_pm10_very_lo, espPm10CurrentValue)
-    esp_pm10Level_lo = fuzz.interp_membership(esp_pm10, esp_pm10_lo, espPm10CurrentValue)
-    esp_pm10Level_md = fuzz.interp_membership(esp_pm10, esp_pm10_md, espPm10CurrentValue)
-    esp_pm10Level_hi = fuzz.interp_membership(esp_pm10, esp_pm10_hi, espPm10CurrentValue)
-    esp_pm10Level_very_hi = fuzz.interp_membership(esp_pm10, esp_pm10_very_hi, espPm10CurrentValue)
+    esp_pm10Level_very_lo = fuzz.interp_membership(esp_pm10, esp_pm10_very_lo, pm10value)
+    esp_pm10Level_lo = fuzz.interp_membership(esp_pm10, esp_pm10_lo, pm10value)
+    esp_pm10Level_md = fuzz.interp_membership(esp_pm10, esp_pm10_md, pm10value)
+    esp_pm10Level_hi = fuzz.interp_membership(esp_pm10, esp_pm10_hi, pm10value)
+    esp_pm10Level_very_hi = fuzz.interp_membership(esp_pm10, esp_pm10_very_hi, pm10value)
 
-    esp_pm25Level_very_lo = fuzz.interp_membership(esp_pm2_5, esp_pm25_very_lo, espPm25CurrentValue)
-    esp_pm25Level_lo = fuzz.interp_membership(esp_pm2_5, esp_pm25_lo, espPm25CurrentValue)
-    esp_pm25Level_md = fuzz.interp_membership(esp_pm2_5, esp_pm25_md, espPm25CurrentValue)
-    esp_pm25Level_hi = fuzz.interp_membership(esp_pm2_5, esp_pm25_hi, espPm25CurrentValue)
-    esp_pm25Level_very_hi = fuzz.interp_membership(esp_pm2_5, esp_pm25_very_hi, espPm25CurrentValue)
+    esp_pm25Level_very_lo = fuzz.interp_membership(esp_pm2_5, esp_pm25_very_lo, pm2_5value)
+    esp_pm25Level_lo = fuzz.interp_membership(esp_pm2_5, esp_pm25_lo, pm2_5value)
+    esp_pm25Level_md = fuzz.interp_membership(esp_pm2_5, esp_pm25_md, pm2_5value)
+    esp_pm25Level_hi = fuzz.interp_membership(esp_pm2_5, esp_pm25_hi, pm2_5value)
+    esp_pm25Level_very_hi = fuzz.interp_membership(esp_pm2_5, esp_pm25_very_hi, pm2_5value)
 
     # define rules
     ###############################################################
@@ -121,42 +116,34 @@ def calculateMandami(espPm25CurrentValue,espPm10CurrentValue):
     ###############################################################
     # IF
     active_rule_18 = np.fmin(esp_pm25Level_hi, esp_pm10Level_md)  # and
-
     fan_action_18 = np.fmin(active_rule_18, fun_level_4)
     ###############################################################
     # IF
     active_rule_19 = np.fmin(esp_pm25Level_hi, esp_pm10Level_hi)  # and
-
     fan_action_19 = np.fmin(active_rule_19, fun_level_4)
     ###############################################################
     # IF
     active_rule_20 = np.fmin(esp_pm25Level_hi, esp_pm10Level_very_hi)  # and
-
     fan_action_20 = np.fmin(active_rule_20, fun_level_5)
     ###############################################################
     # IF
     active_rule_21 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_very_lo)  # and
-
     fan_action_21 = np.fmin(active_rule_21, fun_level_5)
     ###############################################################
     # IF
     active_rule_22 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_lo)  # and
-
     fan_action_22 = np.fmin(active_rule_22, fun_level_5)
     ###############################################################
     # IF
     active_rule_23 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_md)  # and
-
     fan_action_23 = np.fmin(active_rule_23, fun_level_5)
     ###############################################################
     # IF
     active_rule_24 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_hi)  # and
-
     fan_action_24 = np.fmin(active_rule_24, fun_level_5)
     ###############################################################
     # IF
     active_rule_25 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_very_hi)  # and
-
     fan_action_25 = np.fmin(active_rule_25, fun_level_5)
     ###############################################################
     # Aggregate all three output membership functions together

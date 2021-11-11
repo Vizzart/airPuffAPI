@@ -37,11 +37,37 @@ airlyValues = api.inherit('airlyCurrents', {
 
 
 airlyJson = api.model('airly', {
-   'current' : fields.List(fields.Nested(airlyValues,required=True))
+   'current' : fields.List(fields.Nested(airlyValues,required=True)),
+   'forecast': fields.List(fields.Nested(airlyValues,required=True)),
+   'history' : fields.List(fields.Nested(airlyValues,required=True))
 
 })
 
 airlyError = api.model ('airlyError',{
    'message': fields.String
 })
+
+sensorsValue = api.model ('sensorsValue', {
+    'name' : fields.String,
+    'value' : fields.Float
+
+})
+current = api.model('current', {
+   'fromDateTime' : fields.DateTime,
+   'tillDateTime' : fields.DateTime,
+   'sensorValue' : fields.Nested(sensorsValue)
+})
+
+airlyGetLastView = api.model ('airlyGetLastView', {
+   'current' : fields.Nested(current)
+})
+
+airlyGetForecastLastJsonView = api.model('airlyGetForecastLastJsonView', {
+   'forecast' : fields.List(fields.Nested(current))
+})
+
+airlyGetHistoryJsonLastView = api.model ('airlyGetHistoryJsonLastView', {
+   'history': fields.List(fields.Nested(current))
+})
+
 

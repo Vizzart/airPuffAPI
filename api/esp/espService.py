@@ -2,7 +2,7 @@
 import configparser
 import requests
 import logging
-from api.database import models
+from database import models
 from sqlalchemy.orm import Session
 
 log = logging.getLogger(__name__)

@@ -3,26 +3,16 @@ import logging
 from api.esp import espService
 from flask_restx import Resource, marshal
 from api.restX import api
-from api.esp.espSerializers import espJson, espError
-from api.database import models
-auth= {
-    'Basic Auth': {
-        'type' : 'basic',
-        'in' : 'header',
-        'description' : 'auth'
+from api.esp.espSerializers import espJson, espError,espGetLastView
+from database import models
 
-    }
+log = logging.getLogger(__name__)
 
+ns = api.namespace('ESP',description ='\
+Adding and reading new measurements to the database.')
 
-}
-
-ns = api.namespace('ESP',description = 'Adding new measurements to the database.',
-                   authorizations=auth,
-                   security= 'Basic Auth')
-
-
-@ns.route('/last')
-class EspGetFromDataBase(Resource, espService.EspService, models.Esp):
+@ns.route('/current')
+class EspGetFromDataBase(Resource, models.Esp):
     """
 
     """
@@ -36,12 +26,11 @@ class EspGetFromDataBase(Resource, espService.EspService, models.Esp):
     @ns.response(code=500, description='Internal Server Error')
 
     def get(self):
-        response = super().espGetLastFromDataBase()
-        print (response)
+        response = super().espGetLastView()
+        return marshal(response[0][0], espGetLastView), response[1]
 
-@ns.doc(security='Basic Auth')
 @ns.route('/insert')
-class EspInsert(Resource, espService.EspService, models.TempJson):
+class EspInsert(Resource, espService.EspService, models.TempSensorData):
     """
 
     """
@@ -56,7 +45,7 @@ class EspInsert(Resource, espService.EspService, models.TempJson):
 
     def post(self):
         response = super().getDataFromEsp()
-        super().InsertResultJsonToDb(response, 'esp')
+        super().InsertResultJsonToDataBase(response, 'esp')
         print(response)
         if response[1] == 200:
             status_code = 201

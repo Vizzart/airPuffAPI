@@ -5,11 +5,11 @@ import requests
 import setting
 from fuzzy import calculateMandami
 from api.esp.espService import EspService
-from api.esp.end import espRoute
-from api.airly.end import airlyRoute
+from api.esp.endpoints import espRoute
+from api.airly.endpoints import airlyRoute
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
-from api.database.models import Esp
+#from api.database.models import Esp
 
 
 loggingConfPath = os.path.normpath(os.path.join(os.path.dirname(__file__), 'logging.conf'))
@@ -19,24 +19,21 @@ log = logging.getLogger(__name__)
 host = setting.FLASK_SERVER_NAME
 port = setting.FLASK_PORT
 
-
-
-
 def espInsert():
     espRoute.EspInsert().post()
 
 def ailryInsert():
     airlyRoute.AirlyInsert().post()
-
-def setPwm():
-    frame = Esp().espGetLastFromDataBase()
-    print(frame[0],frame[1])
-    if (frame[0] != 0) and (frame[1] !=0):
-        resultMandami = calculateMandami(frame[0],frame[1])
-    print(resultMandami)
-    os.system("gpio mode 23 pwm ")
-    set_pwm = "gpio pwm 23 " + str(resultMandami)
-    os.system(set_pwm)
+#
+# def setPwm():
+#     frame = Esp().espGetLastFromDataBase()
+#     print(frame[0],frame[1])
+#     if (frame[0] != 0) and (frame[1] !=0):
+#         resultMandami = calculateMandami(frame[0],frame[1])
+#     print(resultMandami)
+#     os.system("gpio mode 23 pwm ")
+#     set_pwm = "gpio pwm 23 " + str(resultMandami)
+#     os.system(set_pwm)
 
 
 def espReboot():
@@ -59,5 +56,5 @@ def schedule():
     sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
     sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
     sched.add_job(ailryInsert, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
-    sched.add_job(setPwm, 'interval', seconds=4, id='setPwm')
+    #sched.add_job(setPwm, 'interval', seconds=4, id='setPwm')
     sched.start()
