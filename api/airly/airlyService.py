@@ -33,6 +33,10 @@ class Airly():
         self.latitude = config.get("airly","latitude")
         self.longitude = config.get("airly", "longitude")
         self.distance = config.get("airly", "distance")
+        #ENV
+        load_dotenv()
+        self.key = os.getenv("AIRLY_KEY")
+
 
     def getDataFromAirly(self):
         #Config.ini
@@ -41,9 +45,7 @@ class Airly():
         latitude = self.latitude
         longitude = self.longitude
         distance = self.distance
-        #ENV
-        load_dotenv()
-        key = os.getenv("AIRLY_KEY")
+        key = self.key
         apiUrl =f"""{host}measurements/nearest?lat={latitude}&lng=
         {longitude}&maxDistanceKM={distance}"""
         headers = {'Accept': 'application/json'}

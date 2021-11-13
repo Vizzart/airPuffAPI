@@ -19,11 +19,11 @@ def calculateMandami(pm10value, pm2_5value, pm10norm,pm2_5norm):
     esp_pm25_hi = fuzz.trimf(esp_pm2_5, [10, 15, 20])
     esp_pm25_very_hi = fuzz.trimf(esp_pm2_5, [15, 25, 25])
 
-    fun_level_1 = fuzz.trimf(fun, [0, 0, 240])
-    fun_level_2 = fuzz.trimf(fun, [0, 240, 425])
-    fun_level_3 = fuzz.trimf(fun, [300, 425, 600])
-    fun_level_4 = fuzz.trimf(fun, [450, 650 , 850])
-    fun_level_5 = fuzz.trimf(fun, [650, 1024, 1024])
+    fun_level_1 = fuzz.trimf(fun, [0, 150, 550])
+    fun_level_2 = fuzz.trimf(fun, [200, 500, 700])
+    fun_level_3 = fuzz.trimf(fun, [300, 600, 850])
+    fun_level_4 = fuzz.trimf(fun, [500, 750 , 900])
+    fun_level_5 = fuzz.trimf(fun, [750, 1024, 1024])
 
     # pobrane wartosci z skryptu connectDataBase
     # aktualne wartosci z ESP
