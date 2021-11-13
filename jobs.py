@@ -7,9 +7,11 @@ from fuzzy import calculateMandami
 from api.esp.espService import EspService
 from api.esp.endpoints import espRoute
 from api.airly.endpoints import airlyRoute
+from database import models
+
+from decimal import Decimal
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
-#from api.database.models import Esp
 
 
 loggingConfPath = os.path.normpath(os.path.join(os.path.dirname(__file__), 'logging.conf'))
@@ -25,19 +27,28 @@ def espInsert():
 def ailryInsert():
     airlyRoute.AirlyInsert().post()
 #
-# def setPwm():
-#     frame = Esp().espGetLastFromDataBase()
-#     print(frame[0],frame[1])
-#     if (frame[0] != 0) and (frame[1] !=0):
-#         resultMandami = calculateMandami(frame[0],frame[1])
-#     print(resultMandami)
-#     os.system("gpio mode 23 pwm ")
-#     set_pwm = "gpio pwm 23 " + str(resultMandami)
-#     os.system(set_pwm)
+def setPwm():
+    """
+
+    :return:
+    """
+    espLastMeasurement =(models.Esp().espGetLastView())[0][0]
+    frame = []
+    for row in espLastMeasurement["sensorValue"]:
+        if row['names'] == 'PM2.5':
+            frame.append(row["value"])
+        elif row['names'] =='PM10':
+            frame.append(row["value"])
+    print(frame)
+    resultMandami = calculateMandami(Decimal(frame[0]),Decimal(frame[1]),25,50)
+    print(resultMandami)
+    os.system("gpio mode 23 pwm ")
+    set_pwm = "gpio pwm 23 " + str(resultMandami)
+    os.system(set_pwm)
 
 
 def espReboot():
-    obj = EspService
+    obj = EspService()
     esp_url = f"http://{obj.host}/?cmd=reboot"
     data = {'Accept': 'application/json'}
     requests.get(esp_url,headers= data)
@@ -54,7 +65,7 @@ def schedule():
         'max_instances': setting.MAX_INSTANCES
     }
     sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
-    sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
+    #sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
     sched.add_job(ailryInsert, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
-    #sched.add_job(setPwm, 'interval', seconds=4, id='setPwm')
+    sched.add_job(setPwm, 'interval', seconds=4, id='setPwm')
     sched.start()

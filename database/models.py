@@ -54,7 +54,7 @@ class Esp(connectionDb):
     )
     espCurrentJsonLastView = Table(
         "esp_current_json_last_view", base.metadata
-        , Column('sensor_value', JSONB)
+        , Column('sensorValue', JSONB)
     )
     def espGetLastView(self):
         engine = super().createEngine()
