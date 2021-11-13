@@ -24,12 +24,12 @@ espError = api.model ('espError',{
 
 
 sensorsValue = api.model ('sensorsValue', {
-    'names' : fields.String,
+    'name' : fields.String,
     'value' : fields.Float
 
 })
 espGetLastView = api.model ('espGetLastView', {
-    'sensor_value' : fields.Nested(sensorsValue)
+    'sensorValue' : fields.Nested(sensorsValue)
 
 })
 

@@ -61,8 +61,7 @@ class Esp(connectionDb):
         try:
             with Session(engine) as session:
                 data = session.query(self.espCurrentJsonLastView)
-            session.commit()
-            session.close()
+                session.commit()
             return data, 200
         except:
             return data, 500
@@ -87,8 +86,8 @@ class Airly(connectionDb):
         try:
             with Session(engine) as session:
                 data = session.query(self.airlyCurrentLastView)
-            session.commit()
-            session.close()
+                session.commit()
+                session.close()
             return data, 200
         except:
             return data, 500
@@ -99,8 +98,8 @@ class Airly(connectionDb):
             with Session(engine) as session:
                 rows = session.query(
                     func.array_agg(self.airlyForecastJsonLastView.c.forecast).label("forecast"))
-            session.commit()
-            session.close()
+                session.commit()
+                session.close()
             data = []
             for row in rows:
                 data.append(row)
@@ -114,8 +113,8 @@ class Airly(connectionDb):
             with Session(engine) as session:
                 rows = session.query(
                     func.array_agg(self.airlyHistoryJsonLastView.c.history).label("history"))
-            session.commit()
-            session.close()
+                session.commit()
+                session.close()
             data = []
             for row in rows:
                 data.append(row)
@@ -141,9 +140,8 @@ class Norms(connectionDb):
         try:
             with Session(engine) as session:
                 rows = session.query(self.norms)
-
-            session.commit()
-            session.close()
+                session.commit()
+                session.close()
             data = []
             for row in rows:
                 data.append(row)

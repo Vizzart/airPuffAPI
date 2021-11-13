@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 from sqlalchemy import create_engine
-
+from sqlalchemy.pool import NullPool
 class connectionDb():
 
     def createEngine(self):
@@ -26,5 +26,5 @@ class connectionDb():
         engine = create_engine(
             'postgresql://' + dbUser + ':' + dbPasswd + \
             '@' + dbHost + ':' + dbPort + '/' + dbName
-        )
+        ,poolclass=NullPool)
         return engine
