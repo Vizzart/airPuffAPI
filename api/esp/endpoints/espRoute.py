@@ -8,8 +8,7 @@ from database import models
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('ESP',description ='\
-Adding and reading new measurements to the database.')
+ns = api.namespace('esp',description ='')
 
 @ns.route('/current')
 class EspGetFromDataBase(Resource, models.Esp):
@@ -46,7 +45,6 @@ class EspInsert(Resource, espService.EspService, models.TempSensorData):
     def post(self):
         response = super().getDataFromEsp()
         super().InsertResultJsonToDataBase(response, 'esp')
-        print(response)
         if response[1] == 200:
             status_code = 201
             return marshal(response[0], espJson), status_code

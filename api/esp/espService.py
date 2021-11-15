@@ -30,6 +30,5 @@ class EspService():
         espUrl = f"http://{host}/json?view=sensorupdate"
         headers = {'Accept': 'application/json'}
         response = requests.get(espUrl,headers= headers)
-        print(response)
         return response.json(), response.status_code
 

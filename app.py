@@ -8,6 +8,7 @@ import api.esp.espService
 from api.restX import  api
 from api.airly.endpoints.airlyRoute import  ns as airlyNamespace
 from api.esp.endpoints.espRoute import ns as espNamespace
+from api.config.endpoints.configRoute import ns as configNamespace
 
 app = Flask(__name__)
 
@@ -31,7 +32,7 @@ def initialize_app(flaskApp):
     api.init_app(blueprint)
     api.add_namespace(airlyNamespace)
     api.add_namespace(espNamespace)
-    #api.add_namespace(rpi)
+    api.add_namespace(configNamespace)
     flaskApp.register_blueprint(blueprint)
 
 

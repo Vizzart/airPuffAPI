@@ -3,149 +3,149 @@ import skfuzzy as fuzz
 
 
 def calculateExternalMandami(pm2_5, pm10, pm2_5norm, pm10norm):
-    esp_pm10 = np.arange(1, pm10norm +1, 1)
-    esp_pm2_5 = np.arange(0, pm2_5norm +1, 1)
+    espPm10 = np.arange(1, pm10norm +1, 1)
+    espPm2_5 = np.arange(0, pm2_5norm +1, 1)
     fun = np.arange(0,1024+1, 1)
 
     # Generate fuzzy membership functions
-    esp_pm10_very_lo = fuzz.trimf(esp_pm10, [0, 0, 15])
-    esp_pm10_lo = fuzz.trimf(esp_pm10, [5, 15, 25])
-    esp_pm10_md = fuzz.trimf(esp_pm10, [15, 25, 35])
-    esp_pm10_hi = fuzz.trimf(esp_pm10, [25, 35, 45])
-    esp_pm10_very_hi = fuzz.trimf(esp_pm10, [35, 50, 50])
+    espPm10VeryLow = fuzz.trimf(espPm10, [0, 0, 15])
+    espPm10Low = fuzz.trimf(espPm10, [5, 15, 25])
+    espPm10Mid = fuzz.trimf(espPm10, [15, 25, 35])
+    espPm10High = fuzz.trimf(espPm10, [25, 35, 45])
+    espPm10VeryHigh = fuzz.trimf(espPm10, [35, 50, 50])
 
-    esp_pm25_very_lo = fuzz.trimf(esp_pm2_5, [0, 0, 5])
-    esp_pm25_lo = fuzz.trimf(esp_pm2_5, [0, 5, 10])
-    esp_pm25_md = fuzz.trimf(esp_pm2_5, [5, 10, 15])
-    esp_pm25_hi = fuzz.trimf(esp_pm2_5, [10, 15, 20])
-    esp_pm25_very_hi = fuzz.trimf(esp_pm2_5, [15, 25, 25])
+    espPm25VeryLo = fuzz.trimf(espPm2_5, [0, 0, 5])
+    espPm25Low = fuzz.trimf(espPm2_5, [0, 5, 10])
+    espPm25Mid = fuzz.trimf(espPm2_5, [5, 10, 15])
+    espPm25High = fuzz.trimf(espPm2_5, [10, 15, 20])
+    espPm25VeryHigh = fuzz.trimf(espPm2_5, [15, 25, 25])
 
-    fun_level_1 = fuzz.trimf(fun, [0, 150, 550])
-    fun_level_2 = fuzz.trimf(fun, [200, 500, 700])
-    fun_level_3 = fuzz.trimf(fun, [300, 600, 850])
-    fun_level_4 = fuzz.trimf(fun, [500, 750, 900])
-    fun_level_5 = fuzz.trimf(fun, [750, 1024, 1024])
+    funLevel_1 = fuzz.trimf(fun, [0, 150, 550])
+    funLevel_2 = fuzz.trimf(fun, [200, 500, 700])
+    funLevel_3 = fuzz.trimf(fun, [300, 600, 850])
+    funLevel_4 = fuzz.trimf(fun, [500, 750, 900])
+    funLevel_5 = fuzz.trimf(fun, [750, 1024, 1024])
 
     # pobrane wartosci z skryptu connectDataBase
-    esp_pm10Level_very_lo = fuzz.interp_membership(esp_pm10, esp_pm10_very_lo, pm10)
-    esp_pm10Level_lo = fuzz.interp_membership(esp_pm10, esp_pm10_lo, pm10)
-    esp_pm10Level_md = fuzz.interp_membership(esp_pm10, esp_pm10_md, pm10)
-    esp_pm10Level_hi = fuzz.interp_membership(esp_pm10, esp_pm10_hi, pm10)
-    esp_pm10Level_very_hi = fuzz.interp_membership(esp_pm10, esp_pm10_very_hi, pm10)
+    espPm10LevelVeryLow = fuzz.interp_membership(espPm10, espPm10VeryLow, pm10)
+    espPm10LevelLow = fuzz.interp_membership(espPm10, espPm10Low, pm10)
+    espPm10LevelMid = fuzz.interp_membership(espPm10, espPm10Mid, pm10)
+    espPm10LevelHigh = fuzz.interp_membership(espPm10, espPm10High, pm10)
+    espPm10LevelVeryHigh = fuzz.interp_membership(espPm10, espPm10VeryHigh, pm10)
 
-    esp_pm25Level_very_lo = fuzz.interp_membership(esp_pm2_5, esp_pm25_very_lo, pm2_5)
-    esp_pm25Level_lo = fuzz.interp_membership(esp_pm2_5, esp_pm25_lo, pm2_5)
-    esp_pm25Level_md = fuzz.interp_membership(esp_pm2_5, esp_pm25_md, pm2_5)
-    esp_pm25Level_hi = fuzz.interp_membership(esp_pm2_5, esp_pm25_hi, pm2_5)
-    esp_pm25Level_very_hi = fuzz.interp_membership(esp_pm2_5, esp_pm25_very_hi, pm2_5)
+    espPm25LevelVeryLow = fuzz.interp_membership(espPm2_5, espPm25VeryLo, pm2_5)
+    espPm25LevelLow = fuzz.interp_membership(espPm2_5, espPm25Low, pm2_5)
+    espPm25LevelMid = fuzz.interp_membership(espPm2_5, espPm25Mid, pm2_5)
+    espPm25LevelHigh = fuzz.interp_membership(espPm2_5, espPm25High, pm2_5)
+    espPm25LevelVeryHigh = fuzz.interp_membership(espPm2_5, espPm25VeryHigh, pm2_5)
 
     # define rules
     ## esp10_very_low & esp25_very_low
     ###############################################################
     # IF
-    active_rule_1 = np.fmin(esp_pm25Level_very_lo, esp_pm10Level_very_lo)  # and
-    fan_action_1 = np.fmin(active_rule_1, fun_level_1)
+    active_rule_1 = np.fmin(espPm25LevelVeryLow, espPm10LevelVeryLow)  # and
+    fan_action_1 = np.fmin(active_rule_1, funLevel_1)
     ###############################################################
     # IF
-    active_rule_2 = np.fmin(esp_pm25Level_very_lo, esp_pm10Level_lo)  # and
-    fan_action_2 = np.fmin(active_rule_2, fun_level_2)
+    active_rule_2 = np.fmin(espPm25LevelVeryLow, espPm10LevelLow)  # and
+    fan_action_2 = np.fmin(active_rule_2, funLevel_2)
     ###############################################################
     # IF
-    active_rule_3 = np.fmin(esp_pm25Level_very_lo, esp_pm10Level_md)  # and
-    fan_action_3 = np.fmin(active_rule_3, fun_level_3)
+    active_rule_3 = np.fmin(espPm25LevelVeryLow, espPm10LevelMid)  # and
+    fan_action_3 = np.fmin(active_rule_3, funLevel_3)
     ###############################################################
     # IF
-    active_rule_4 = np.fmin(esp_pm25Level_very_lo, esp_pm10Level_hi)  # and
-    fan_action_4 = np.fmin(active_rule_4, fun_level_4)
+    active_rule_4 = np.fmin(espPm25LevelVeryLow, espPm10LevelHigh)  # and
+    fan_action_4 = np.fmin(active_rule_4, funLevel_4)
     ###############################################################
     # IF
-    active_rule_5 = np.fmin(esp_pm25Level_very_lo, esp_pm10Level_very_hi)  # and
-    fan_action_5 = np.fmin(active_rule_5, fun_level_5)
+    active_rule_5 = np.fmin(espPm25LevelVeryLow, espPm10LevelVeryHigh)  # and
+    fan_action_5 = np.fmin(active_rule_5, funLevel_5)
     ###############################################################
     # IF
-    active_rule_6 = np.fmin(esp_pm25Level_lo, esp_pm10Level_very_lo)  # and
-    fan_action_6 = np.fmin(active_rule_6, fun_level_2)
+    active_rule_6 = np.fmin(espPm25LevelLow, espPm10LevelVeryLow)  # and
+    fan_action_6 = np.fmin(active_rule_6, funLevel_2)
     ###############################################################
     # IF
-    active_rule_7 = np.fmin(esp_pm25Level_lo, esp_pm10Level_lo)  # and
-    fan_action_7 = np.fmin(active_rule_7, fun_level_2)
+    active_rule_7 = np.fmin(espPm25LevelLow, espPm10LevelLow)  # and
+    fan_action_7 = np.fmin(active_rule_7, funLevel_2)
     ###############################################################
     # IF
-    active_rule_8 = np.fmin(esp_pm25Level_lo, esp_pm10Level_md)  # and
-    fan_action_8 = np.fmin(active_rule_8, fun_level_3)
+    active_rule_8 = np.fmin(espPm25LevelLow, espPm10LevelMid)  # and
+    fan_action_8 = np.fmin(active_rule_8, funLevel_3)
     ###############################################################
     # IF
-    active_rule_9 = np.fmin(esp_pm25Level_lo, esp_pm10Level_hi)  # and
-    fan_action_9 = np.fmin(active_rule_9, fun_level_4)
+    active_rule_9 = np.fmin(espPm25LevelLow, espPm10LevelHigh)  # and
+    fan_action_9 = np.fmin(active_rule_9, funLevel_4)
     ###############################################################
     # IF
-    active_rule_10 = np.fmin(esp_pm25Level_lo, esp_pm10Level_very_hi)  # and
-    fan_action_10 = np.fmin(active_rule_10, fun_level_5)
+    active_rule_10 = np.fmin(espPm25LevelLow, espPm10LevelVeryHigh)  # and
+    fan_action_10 = np.fmin(active_rule_10, funLevel_5)
     ###############################################################
     # IF
-    active_rule_11 = np.fmin(esp_pm25Level_md, esp_pm10Level_very_lo)  # and
-    fan_action_11 = np.fmin(active_rule_11, fun_level_3)
+    active_rule_11 = np.fmin(espPm25LevelMid, espPm10LevelVeryLow)  # and
+    fan_action_11 = np.fmin(active_rule_11, funLevel_3)
     ###############################################################
     # IF
-    active_rule_12 = np.fmin(esp_pm25Level_md, esp_pm10Level_lo)  # and
-    fan_action_12 = np.fmin(active_rule_12, fun_level_3)
+    active_rule_12 = np.fmin(espPm25LevelMid, espPm10LevelLow)  # and
+    fan_action_12 = np.fmin(active_rule_12, funLevel_3)
     ###############################################################
     # IF
-    active_rule_13 = np.fmin(esp_pm25Level_md, esp_pm10Level_md)  # and
-    fan_action_13 = np.fmin(active_rule_13, fun_level_3)
+    active_rule_13 = np.fmin(espPm25LevelMid, espPm10LevelMid)  # and
+    fan_action_13 = np.fmin(active_rule_13, funLevel_3)
     ###############################################################
     # IF
-    active_rule_14 = np.fmin(esp_pm25Level_md, esp_pm10Level_hi)  # and
-    fan_action_14 = np.fmin(active_rule_14, fun_level_4)
+    active_rule_14 = np.fmin(espPm25LevelMid, espPm10LevelHigh)  # and
+    fan_action_14 = np.fmin(active_rule_14, funLevel_4)
     ###############################################################
     # IF
-    active_rule_15 = np.fmin(esp_pm25Level_md, esp_pm10Level_very_hi)  # and
-    fan_action_15 = np.fmin(active_rule_15, fun_level_5)
+    active_rule_15 = np.fmin(espPm25LevelMid, espPm10LevelVeryHigh)  # and
+    fan_action_15 = np.fmin(active_rule_15, funLevel_5)
     ###############################################################
     # IF
-    active_rule_16 = np.fmin(esp_pm25Level_hi, esp_pm10Level_very_lo)  # and
-    fan_action_16 = np.fmin(active_rule_16, fun_level_4)
+    active_rule_16 = np.fmin(espPm25LevelHigh, espPm10LevelVeryLow)  # and
+    fan_action_16 = np.fmin(active_rule_16, funLevel_4)
     ###############################################################
     # IF
-    active_rule_17 = np.fmin(esp_pm25Level_hi, esp_pm10Level_lo)  # and
-    fan_action_17 = np.fmin(active_rule_17, fun_level_4)
+    active_rule_17 = np.fmin(espPm25LevelHigh, espPm10LevelLow)  # and
+    fan_action_17 = np.fmin(active_rule_17, funLevel_4)
     ###############################################################
     # IF
-    active_rule_18 = np.fmin(esp_pm25Level_hi, esp_pm10Level_md)  # and
-    fan_action_18 = np.fmin(active_rule_18, fun_level_4)
+    active_rule_18 = np.fmin(espPm25LevelHigh, espPm10LevelMid)  # and
+    fan_action_18 = np.fmin(active_rule_18, funLevel_4)
     ###############################################################
     # IF
-    active_rule_19 = np.fmin(esp_pm25Level_hi, esp_pm10Level_hi)  # and
+    active_rule_19 = np.fmin(espPm25LevelHigh, espPm10LevelHigh)  # and
 
-    fan_action_19 = np.fmin(active_rule_19, fun_level_4)
+    fan_action_19 = np.fmin(active_rule_19, funLevel_4)
     ###############################################################
     # IF
-    active_rule_20 = np.fmin(esp_pm25Level_hi, esp_pm10Level_very_hi)  # and
+    active_rule_20 = np.fmin(espPm25LevelHigh, espPm10LevelVeryHigh)  # and
 
-    fan_action_20 = np.fmin(active_rule_20, fun_level_5)
+    fan_action_20 = np.fmin(active_rule_20, funLevel_5)
     ###############################################################
     # IF
-    active_rule_21 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_very_lo)  # and
+    active_rule_21 = np.fmin(espPm25LevelVeryHigh, espPm10LevelVeryLow)  # and
 
-    fan_action_21 = np.fmin(active_rule_21, fun_level_5)
+    fan_action_21 = np.fmin(active_rule_21, funLevel_5)
     ###############################################################
     # IF
-    active_rule_22 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_lo)  # and
+    active_rule_22 = np.fmin(espPm25LevelVeryHigh, espPm10LevelLow)  # and
 
-    fan_action_22 = np.fmin(active_rule_22, fun_level_5)
+    fan_action_22 = np.fmin(active_rule_22, funLevel_5)
     ###############################################################
     # IF
-    active_rule_23 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_md)  # and
+    active_rule_23 = np.fmin(espPm25LevelVeryHigh, espPm10LevelMid)  # and
 
-    fan_action_23 = np.fmin(active_rule_23, fun_level_5)
+    fan_action_23 = np.fmin(active_rule_23, funLevel_5)
     ###############################################################
     # IF
-    active_rule_24 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_hi)  # and
-    fan_action_24 = np.fmin(active_rule_24, fun_level_5)
+    active_rule_24 = np.fmin(espPm25LevelVeryHigh, espPm10LevelHigh)  # and
+    fan_action_24 = np.fmin(active_rule_24, funLevel_5)
     ###############################################################
     # IF
-    active_rule_25 = np.fmin(esp_pm25Level_very_hi, esp_pm10Level_very_hi)  # and
-    fan_action_25 = np.fmin(active_rule_25, fun_level_5)
+    active_rule_25 = np.fmin(espPm25LevelVeryHigh, espPm10LevelVeryHigh)  # and
+    fan_action_25 = np.fmin(active_rule_25, funLevel_5)
     ###############################################################
     # Aggregate all three output membership functions together
     aggregate = np.fmax(fan_action_1,

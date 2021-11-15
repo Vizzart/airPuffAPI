@@ -9,8 +9,7 @@ from database import models
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('Airly', description='\
-Adding and reading new measurements to the database.')
+ns = api.namespace('airly', description='')
 
 @ns.route('/insert')
 class AirlyInsert(Resource,airlyService.Airly,models.TempSensorData):
@@ -29,7 +28,6 @@ class AirlyInsert(Resource,airlyService.Airly,models.TempSensorData):
     def post(self):
         response = super().getDataFromAirly()
         super().InsertResultJsonToDataBase(response, 'airly')
-        print(response)
         #change status get from airly to 201
         if response[1] == 200:
             status_code = 201
@@ -53,7 +51,6 @@ class AirlyCurrentView(Resource, models.Airly):
 
     def get(self):
         response = super().airlyGetLastJsonView()
-        print(response[0])
         return marshal(response[0][0], airlyGetLastView), response[1]
 
 @ns.route('/forecast')
@@ -72,7 +69,6 @@ class AirlyForecastView(Resource, models.Airly):
 
     def get(self):
         response = super().airlyGetForecastLastJsonView()
-        print(response[0])
         return marshal(response[0], airlyGetForecastLastJsonView), response[1]
 
 @ns.route('/history')
@@ -91,7 +87,6 @@ class AirlyHistoryView(Resource, models.Airly):
 
     def get(self):
         response = super().airlyGetHistoryJsonLastView()
-        print(response[0])
         return marshal(response[0], airlyGetHistoryJsonLastView), response[1]
 
 # @ns.route('/norms')

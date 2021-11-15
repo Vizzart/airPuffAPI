@@ -139,7 +139,7 @@ class Norms(connectionDb):
         engine = self.createEngine()
         try:
             with Session(engine) as session:
-                rows = session.query(self.norms)
+                rows = session.query(self.norms).order_by(self.norms.c.date_current).limit(1)
                 session.commit()
                 session.close()
             data = []
