@@ -3,7 +3,8 @@ import logging.config
 import os
 import requests
 import setting
-from fuzzy.externalFuzzy import calculateMandami
+from fuzzy.externalFuzzy import calculateExternalMandami
+from fuzzy.iternalFuzzy import calculateIternalMandami
 from api.esp.espService import EspService
 from api.esp.endpoints import espRoute
 from api.airly.endpoints import airlyRoute
@@ -68,13 +69,15 @@ def setPwm():
             else:
                 frame.append(50)
     print(frame)
-    espCurrentMandami = calculateMandami(frame [0],frame[1], 25, 50)
-    airlyCurrentMandami = calculateMandami(frame[2], frame[3], 25, 50)
-    airlyForecastMandami = calculateMandami(frame[4], frame[5], 25, 50)
+    espCurrentMandami = calculateExternalMandami(frame [0],frame[1], 25, 50)
+    airlyCurrentMandami = calculateExternalMandami(frame[2], frame[3], 25, 50)
+    airlyForecastMandami = calculateExternalMandami(frame[4], frame[5], 25, 50)
     print(espCurrentMandami,airlyCurrentMandami, airlyForecastMandami)
-    # os.system("gpio mode 23 pwm ")
-    # set_pwm = "gpio pwm 23 " + str(resultMandami)
-    # os.system(set_pwm)
+    funMandami = calculateIternalMandami(airlyCurrentMandami,espCurrentMandami,airlyForecastMandami)
+    print(funMandami)
+    os.system("gpio mode 23 pwm ")
+    set_pwm = "gpio pwm 23 " + str(funMandami)
+    os.system(set_pwm)
 
 def espReboot():
     obj = EspService()
@@ -93,7 +96,7 @@ def schedule():
         'max_instances': setting.MAX_INSTANCES
     }
     sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
-    #sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
-    sched.add_job(ailryInsert, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
+    sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
+    #sched.add_job(ailryInsert, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
     sched.add_job(setPwm, 'interval', seconds=4, id='setPwm')
     sched.start()

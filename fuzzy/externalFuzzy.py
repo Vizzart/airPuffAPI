@@ -2,7 +2,7 @@ import numpy as np
 import skfuzzy as fuzz
 
 
-def calculateMandami(pm2_5, pm10, pm2_5norm, pm10norm):
+def calculateExternalMandami(pm2_5, pm10, pm2_5norm, pm10norm):
     esp_pm10 = np.arange(1, pm10norm +1, 1)
     esp_pm2_5 = np.arange(0, pm2_5norm +1, 1)
     fun = np.arange(0,1024+1, 1)
