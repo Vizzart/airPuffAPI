@@ -17,9 +17,6 @@ class EspInsert(Resource, models.Norms):
     @ns.response(code=400, description='Bad Request')
     @ns.response(code=401, description='Unauthorized')
     @ns.response(code=404, description='Not Found')
-    @ns.response(code=405, description='Method Not Allowed')
-    @ns.response(code=406, description='Not Acceptable')
-    @ns.response(code=429, description='Too Many Requests')
     @ns.response(code=500, description='Internal Server Error')
 
     def get(self):

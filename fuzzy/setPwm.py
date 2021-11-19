@@ -5,9 +5,6 @@ from fuzzy.iternalFuzzy import calculateIternalMandami
 
 
 def setPwm():
-    """
-    :return:
-    """
     espLastMeasurement=(models.Esp().espGetLastView())[0][0]
     frame = []
     for row in espLastMeasurement["sensorValue"]:
@@ -49,8 +46,9 @@ def setPwm():
     espCurrentMandami = calculateExternalMandami(frame [0],frame[1], 25, 50)
     airlyCurrentMandami = calculateExternalMandami(frame[2], frame[3], 25, 50)
     airlyForecastMandami = calculateExternalMandami(frame[4], frame[5], 25, 50)
-    print(airlyCurrentMandami,espCurrentMandami, airlyForecastMandami)
-    funMandami = calculateIternalMandami(airlyCurrentMandami,espCurrentMandami,airlyForecastMandami)
+    print(airlyCurrentMandami, espCurrentMandami, airlyForecastMandami)
+
+    funMandami = calculateIternalMandami(airlyCurrentMandami, espCurrentMandami, airlyForecastMandami)
     print(funMandami)
     os.system("gpio mode 23 pwm ")
     set_pwm = "gpio pwm 23 " + str(funMandami)

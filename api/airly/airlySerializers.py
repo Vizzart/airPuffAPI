@@ -34,8 +34,6 @@ airlyValues = api.inherit('airlyCurrents', {
 
 })
 
-
-
 airlyJson = api.model('airly', {
    'current' : fields.List(fields.Nested(airlyValues,required=True)),
    'forecast': fields.List(fields.Nested(airlyValues,required=True)),

@@ -22,6 +22,9 @@ espError = api.model ('espError',{
     'message': fields.String
 })
 
+espStatus = api.model ('espStatus',{
+    'message': fields.String
+})
 
 sensorsValue = api.model ('sensorsValue', {
     'name' : fields.String,

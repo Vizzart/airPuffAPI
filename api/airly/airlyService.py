@@ -4,7 +4,6 @@ import requests
 import os
 import logging
 
-from database import models
 from dotenv import load_dotenv
 
 log = logging.getLogger(__name__)
