@@ -25,7 +25,6 @@ class EspGetFromDataBase(Resource, models.Esp):
 class EspInsert(Resource, espService.EspService, models.TempSensorData):
 
     @ns.response(code=201, description='Create')
-    @ns.response(code=400, description='Bad Request')
     @ns.response(code=404, description='Not Found')
     @ns.response(code=500, description='Internal Server Error')
 

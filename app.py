@@ -14,12 +14,13 @@ app = Flask(__name__)
 
 
 
-#logging.basicConfig(filename='log/record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+logging.basicConfig(\
+    #filename='log/record.log',
+level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 
 import logging.config
-from pythonjsonlogger import jsonlogger
-from datetime import datetime;
+
 
 
 def configure_app(flaskApp):
@@ -47,7 +48,7 @@ def main():
     #init insert
     jobs.espInsert()
     jobs.ailryInsert()
-    #jobs
+    jobs
     jobs.schedule()
     initialize_app(app)
     app.run(host=setting.FLASK_SERVER_NAME ,port = setting.FLASK_PORT)

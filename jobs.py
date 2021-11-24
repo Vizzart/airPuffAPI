@@ -29,7 +29,7 @@ def schedule():
         'coalesce': setting.COALESCE,
         'max_instances': setting.MAX_INSTANCES
     }
-    sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults)
+    sched = BackgroundScheduler(executors=executors, job_defaults=job_defaults, timezone=('Europe/Warsaw'))
     sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
     sched.add_job(ailryInsert, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
     sched.add_job(espReboot, 'interval', minutes=setting.INTERVAL_ESP_REBOOT_MINUTES, id='espReboot')
