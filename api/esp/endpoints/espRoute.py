@@ -10,26 +10,23 @@ log = logging.getLogger(__name__)
 
 ns = api.namespace('esp',description ='')
 
-@ns.route('/get/current')
+@ns.route('/measurement/current')
 class EspGetFromDataBase(Resource, models.Esp):
-    """
 
-    """
-    @ns.response(code=201, description='Create')
-    @ns.response(code=400, description='Bad Request')
+    @ns.response(code=200, description='OK')
+    @ns.response(code=404, description='Not Found')
     @ns.response(code=500, description='Internal Server Error')
 
     def get(self):
         response = super().espGetLastView()
         return marshal(response[0][0], espGetLastView), response[1]
 
-@ns.route('/post')
+@ns.route('/measurement')
 class EspInsert(Resource, espService.EspService, models.TempSensorData):
-    """
 
-    """
     @ns.response(code=201, description='Create')
     @ns.response(code=400, description='Bad Request')
+    @ns.response(code=404, description='Not Found')
     @ns.response(code=500, description='Internal Server Error')
 
     def post(self):
@@ -44,11 +41,10 @@ class EspInsert(Resource, espService.EspService, models.TempSensorData):
 
 @ns.route('/reboot')
 class EspReboot(Resource, espService.EspService):
-    """
 
-    """
-    @ns.response(code=200, description='Create')
+    @ns.response(code=200, description='OK')
     @ns.response(code=401, description='Unauthorized')
+    @ns.response(code=404, description='Not Found')
     @ns.response(code=500, description='Internal Server Error')
 
     def get(self):

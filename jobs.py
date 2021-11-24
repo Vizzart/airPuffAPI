@@ -33,5 +33,5 @@ def schedule():
     sched.add_job(espInsert, 'interval', seconds=setting.INTERVAL_ESP_SECONDS, id='espInsert')
     sched.add_job(ailryInsert, 'interval', seconds=setting.INTERVAL_AILRY_SECONDS, id='airlyInsert')
     sched.add_job(espReboot, 'interval', minutes=setting.INTERVAL_ESP_REBOOT_MINUTES, id='espReboot')
-    sched.add_job(fanLevel, 'interval', seconds=4, id='setPwm')
+    sched.add_job(fanLevel, 'interval', seconds=setting.INTERVAL_PWM, id='setPwm')
     sched.start()

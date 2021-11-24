@@ -1,29 +1,18 @@
 import logging
+import os
 
-from flask_restx import Resource, marshal
+from flask_restx import Resource
 from api.restX import api
 from database import models
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('config',description ='')
+ns = api.namespace('rpi',description ='')
 
-@ns.route('/norms')
-class EspInsert(Resource, models.Norms):
-    """
-
-    """
-    @ns.response(code=201, description='Create')
-    @ns.response(code=400, description='Bad Request')
-    @ns.response(code=401, description='Unauthorized')
-    @ns.response(code=404, description='Not Found')
+@ns.route('/reboot')
+class EspInsert(Resource):
+    @ns.response(code=200, description='Create')
     @ns.response(code=500, description='Internal Server Error')
-
     def get(self):
-        response = super().getConfigNorms()
-        print(response)
-        # if response[1] == 200:
-        #     status_code = 201
-        #     return marshal(response[0], espJson), status_code
-        # else:
-        #     return marshal(response[0], espError), response[1]
+        os.system("sudo reboot")
+        return 200

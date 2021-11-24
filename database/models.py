@@ -5,8 +5,7 @@ from datetime import datetime
 
 from database.connectionDb import connectionDb
 from sqlalchemy import Table, Column, func
-from sqlalchemy.dialects.postgresql import UUID,\
-TIMESTAMP, JSONB, INTEGER, VARCHAR, NUMERIC, TEXT
+from sqlalchemy.dialects.postgresql import TIMESTAMP, JSONB, INTEGER, VARCHAR
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 
@@ -19,39 +18,27 @@ class TempSensorData(connectionDb):
     tempJsonStatus = Table(
         "temp_sensor_data", base.metadata
         , Column('id', INTEGER)
-        , Column('uuid', UUID)
         , Column('date_current', TIMESTAMP)
         , Column('json_text', JSONB)
         , Column('api_name', VARCHAR)
-        , Column('status', INTEGER)
     )
 
     def InsertResultJsonToDataBase(self, response, apiName):
         engine = super().createEngine()
         jsonString = json.dumps(response[0])
         currentDate = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        # self.dbconnect(self)
         with Session(engine) as session:
             statement = TempSensorData.tempJsonStatus.insert().values(
                 date_current=currentDate,
                 json_text=jsonString,
-                api_name=apiName,
-                status=response[1]
+                api_name=apiName
             )
             session.execute(statement)
             session.commit()
             session.close()
-
+#
 class Esp(connectionDb):
 
-    espSensor = Table(
-        "esp_sensor", base.metadata
-        , Column('id', INTEGER)
-        , Column('uuid', UUID)
-        , Column('date_current', TIMESTAMP)
-        , Column('pm_10', NUMERIC)
-        , Column('pm_2_5', NUMERIC)
-    )
     espCurrentJsonLastView = Table(
         "esp_current_json_last_view", base.metadata
         , Column('sensorValue', JSONB)
@@ -122,29 +109,28 @@ class Airly(connectionDb):
         except:
             return data, 500
 
-class Norms(connectionDb):
-    norms = Table(
-        "norms"
-        , base.metadata
-        , Column('id', INTEGER)
-        , Column('uuid_', UUID)
-        , Column('date_current', TIMESTAMP)
-        , Column('pm_10_norm', NUMERIC)
-        , Column('pm_2_5_norm', NUMERIC)
-        , Column('description', TEXT)
-        , schema = "config"
-    )
-
-    def getConfigNorms(self):
-        engine = self.createEngine()
-        try:
-            with Session(engine) as session:
-                rows = session.query(self.norms).order_by(self.norms.c.date_current).limit(1)
-                session.commit()
-                session.close()
-            data = []
-            for row in rows:
-                data.append(row)
-            return data, 200
-        except:
-            return data, 500
+# class Norms(connectionDb):
+#     norms = Table(
+#         "norms"
+#         , base.metadata
+#         , Column('id', INTEGER)
+#         , Column('date_current', TIMESTAMP)
+#         , Column('pm_10_norm', NUMERIC)
+#         , Column('pm_2_5_norm', NUMERIC)
+#         , Column('description', TEXT)
+#         , schema = "config"
+#     )
+#
+#     def getConfigNorms(self):
+#         engine = self.createEngine()
+#         try:
+#             with Session(engine) as session:
+#                 rows = session.query(self.norms).order_by(self.norms.c.date_current).limit(1)
+#                 session.commit()
+#                 session.close()
+#             data = []
+#             for row in rows:
+#                 data.append(row)
+#             return data, 200
+#         except:
+#             return data, 500

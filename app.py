@@ -5,16 +5,22 @@ import jobs
 from flask import Flask
 from flask import Blueprint
 import api.esp.espService
-from api.restX import  api
+from api.restX import api
 from api.airly.endpoints.airlyRoute import  ns as airlyNamespace
 from api.esp.endpoints.espRoute import ns as espNamespace
 from api.config.endpoints.configRoute import ns as configNamespace
 
 app = Flask(__name__)
 
-loggingConfPath = os.path.normpath(os.path.join(os.path.dirname(__file__), 'logging.conf'))
-logging.config.fileConfig(loggingConfPath)
-log = logging.getLogger(__name__)
+
+
+#logging.basicConfig(filename='log/record.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+
+import logging.config
+from pythonjsonlogger import jsonlogger
+from datetime import datetime;
+
 
 def configure_app(flaskApp):
     flaskApp.config['flaskApp'] = setting.FLASK_APP
@@ -25,6 +31,8 @@ def configure_app(flaskApp):
     flaskApp.config['RESTPLUS_MASK_SWAGGER'] = setting.REST_MASK_SWAGGER
     flaskApp.config['ERROR_404_HELP'] = setting.REST_ERROR_404_HELP
 
+
+
 def initialize_app(flaskApp):
     configure_app(flaskApp)
     blueprint = Blueprint('api', __name__, url_prefix='/api')
@@ -34,7 +42,12 @@ def initialize_app(flaskApp):
     api.add_namespace(configNamespace)
     flaskApp.register_blueprint(blueprint)
 
+
 def main():
+    #init insert
+    jobs.espInsert()
+    jobs.ailryInsert()
+    #jobs
     jobs.schedule()
     initialize_app(app)
     app.run(host=setting.FLASK_SERVER_NAME ,port = setting.FLASK_PORT)

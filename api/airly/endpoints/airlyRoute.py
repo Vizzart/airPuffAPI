@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 ns = api.namespace('airly', description='')
 
-@ns.route('/post')
+@ns.route('/measurement')
 class AirlyInsert(Resource, airlyService.Airly, models.TempSensorData):
     """
     response[0] -json
@@ -31,7 +31,7 @@ class AirlyInsert(Resource, airlyService.Airly, models.TempSensorData):
         else:
             return marshal(response[0],airlyError ), response[1]
 
-@ns.route('/get/current')
+@ns.route('/measurement/current')
 class AirlyCurrentView(Resource, models.Airly):
 
     @ns.response(code=200, description='OK')
@@ -44,7 +44,7 @@ class AirlyCurrentView(Resource, models.Airly):
         response = super().airlyGetLastJsonView()
         return marshal(response[0][0], airlyGetLastView), response[1]
 
-@ns.route('/get/forecast')
+@ns.route('/measurement/forecast')
 class AirlyForecastView(Resource, models.Airly):
 
     @ns.response(code=201, description='OK')
@@ -57,7 +57,7 @@ class AirlyForecastView(Resource, models.Airly):
         response = super().airlyGetForecastLastJsonView()
         return marshal(response[0], airlyGetForecastLastJsonView), response[1]
 
-@ns.route('/get/history')
+@ns.route('/measurement/history')
 class AirlyHistoryView(Resource, models.Airly):
 
     @ns.response(code=200, description='OK')
