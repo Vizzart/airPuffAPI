@@ -7,16 +7,17 @@ def fmaximum(func1,func2):
 
 def getAggregate(counter,action,aggrs):
     if  counter  == 0:
-        return fmaximum(action[counter-1],aggrs)
+        return np.fmax(action[counter-1],aggrs)
     else:
         if counter == len(action):
-            aggr = fmaximum(action[counter-1],action[counter])
+            aggr = np.fmax(action[counter-1],action[counter])
             return getAggregate(counter - 1, action, aggr)
         else:
-            aggr = fmaximum(action[counter-1],aggrs)
+            aggr = np.fmax(action[counter-1],aggrs)
             return getAggregate(counter -1,action,aggr)
 
 def calculateIternalMandami(airlyCurrentMeassurment, espCurrentMeasurment, airlyForecastMeasurment):
+
     airlyCurrent = np.arange(0, 1024, 1)
     airlyForecast = np.arange(0, 1024, 1)
     espCurrent = np.arange(0, 1024, 1)
@@ -308,8 +309,8 @@ def calculateIternalMandami(airlyCurrentMeassurment, espCurrentMeasurment, airly
     action.append(np.fmin(activeRule[105], funLevel_3))
     action.append(np.fmin(activeRule[106], funLevel_3))
     action.append(np.fmin(activeRule[107], funLevel_3))
-    action.append(np.fmin(activeRule[108], funLevel_4))
-    action.append(np.fmin(activeRule[109], funLevel_5))
+    action.append(np.fmin(activeRule[108], funLevel_3))
+    action.append(np.fmin(activeRule[109], funLevel_3))
     action.append(np.fmin(activeRule[110], funLevel_3))
     action.append(np.fmin(activeRule[111], funLevel_3))
     action.append(np.fmin(activeRule[112], funLevel_3))

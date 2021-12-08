@@ -108,29 +108,3 @@ class Airly(connectionDb):
             return data, 200
         except:
             return data, 500
-
-# class Norms(connectionDb):
-#     norms = Table(
-#         "norms"
-#         , base.metadata
-#         , Column('id', INTEGER)
-#         , Column('date_current', TIMESTAMP)
-#         , Column('pm_10_norm', NUMERIC)
-#         , Column('pm_2_5_norm', NUMERIC)
-#         , Column('description', TEXT)
-#         , schema = "config"
-#     )
-#
-#     def getConfigNorms(self):
-#         engine = self.createEngine()
-#         try:
-#             with Session(engine) as session:
-#                 rows = session.query(self.norms).order_by(self.norms.c.date_current).limit(1)
-#                 session.commit()
-#                 session.close()
-#             data = []
-#             for row in rows:
-#                 data.append(row)
-#             return data, 200
-#         except:
-#             return data, 500

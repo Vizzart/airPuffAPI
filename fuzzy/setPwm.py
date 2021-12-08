@@ -3,8 +3,9 @@ from database import models
 from fuzzy.externalFuzzy import calculateExternalMandami
 from fuzzy.iternalFuzzy import calculateIternalMandami
 
-
 def setPwm():
+    pm2_5norm = 25
+    pm10norm = 50
     espLastMeasurement=(models.Esp().espGetLastView())[0][0]
     frame = []
     for row in espLastMeasurement["sensorValue"]:
@@ -43,9 +44,9 @@ def setPwm():
              else:
                  frame.append(50)
     print(frame)
-    espCurrentMandami = calculateExternalMandami(frame[0], frame[1], 25, 50)
-    airlyCurrentMandami = calculateExternalMandami(frame[2], frame[3], 25, 50)
-    airlyForecastMandami = calculateExternalMandami(frame[4], frame[5], 25, 50)
+    espCurrentMandami = calculateExternalMandami(frame[0], frame[1], pm2_5norm, pm10norm)
+    airlyCurrentMandami = calculateExternalMandami(frame[2], frame[3], pm2_5norm, pm10norm)
+    airlyForecastMandami = calculateExternalMandami(frame[4], frame[5], pm2_5norm, pm10norm)
     print(airlyCurrentMandami, espCurrentMandami, airlyForecastMandami)
 
     funMandami = calculateIternalMandami(airlyCurrentMandami, espCurrentMandami, airlyForecastMandami)

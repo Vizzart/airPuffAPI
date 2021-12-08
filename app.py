@@ -1,5 +1,4 @@
 import setting
-import os
 import logging.config
 import jobs
 from flask import Flask
@@ -12,14 +11,9 @@ from api.config.endpoints.configRoute import ns as configNamespace
 
 app = Flask(__name__)
 
-
-
 logging.basicConfig(\
     #filename='log/record.log',
 level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
-
-
-import logging.config
 
 
 
@@ -46,9 +40,8 @@ def initialize_app(flaskApp):
 
 def main():
     #init insert
-    jobs.espInsert()
-    jobs.ailryInsert()
-    jobs
+    #jobs.espInsert()
+    #jobs.ailryInsert()
     jobs.schedule()
     initialize_app(app)
     app.run(host=setting.FLASK_SERVER_NAME ,port = setting.FLASK_PORT)
